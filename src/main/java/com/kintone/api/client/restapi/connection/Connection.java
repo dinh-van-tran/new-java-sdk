@@ -1,3 +1,19 @@
+/**
+ * Copyright 2017 Cybozu
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.kintone.api.client.restapi.connection;
 
 import java.io.BufferedReader;
@@ -13,6 +29,8 @@ import com.google.gson.JsonObject;
 import com.kintone.api.client.restapi.auth.IAuth;
 
 public class Connection {
+    private static final String JSON_CONTENT = "application/json";
+
     private String domain;
     private int guestSpaceId;
     private IAuth auth;
@@ -74,6 +92,18 @@ public class Connection {
         }
 
         return response;
+    }
+
+    private URL getURL(String apiName) {
+        if (apiName == null || apiName.isEmpty()) {
+            throw new NullPointerException("URL is empty");
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (!apiName.contains("https://")) {
+            sb.append("https://").append(apiName);
+        }
+        return null;
     }
 
     private String readStream(InputStream is) throws IOException {
