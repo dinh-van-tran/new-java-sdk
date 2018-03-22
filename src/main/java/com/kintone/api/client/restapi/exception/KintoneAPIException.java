@@ -16,18 +16,18 @@
 
 package com.kintone.api.client.restapi.exception;
 
-public class KintoneAPIExeption extends Exception {
+public class KintoneAPIException extends Exception {
     private static final long serialVersionUID = 1L;
     private int httpErrorCode;
     private ErrorResponse errorResponse;
 
-    public KintoneAPIExeption(int httpErrorCode, ErrorResponse errorResponse) {
+    public KintoneAPIException(int httpErrorCode, ErrorResponse errorResponse) {
         super(errorResponse.getMessage());
         this.httpErrorCode = httpErrorCode;
         this.errorResponse = errorResponse;
     }
 
-    public KintoneAPIExeption(String error) {
+    public KintoneAPIException(String error) {
         super(error);
     }
 

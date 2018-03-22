@@ -35,14 +35,17 @@ import java.util.Properties;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.kintone.api.client.restapi.auth.Auth;
 import com.kintone.api.client.restapi.auth.HTTPHeader;
 import com.kintone.api.client.restapi.exception.ErrorResponse;
-import com.kintone.api.client.restapi.exception.KintoneAPIExeption;
+import com.kintone.api.client.restapi.exception.KintoneAPIException;
 
 public class Connection {
     private static final String JSON_CONTENT = "application/json";
-    private static Gson gson = new Gson();
+    private static final JsonParser jsonParser = new JsonParser();
+    private static final Gson gson = new Gson();
 
     private final String USER_AGENT_KEY = "User-Agent";
     private final String USER_AGENT_VALUE = "kintone-java-SDK";
@@ -64,7 +67,7 @@ public class Connection {
         this(domain, auth, -1);
     }
 
-    public String request(String method, String apiName, String body) throws KintoneAPIExeption {
+    public JsonElement request(String method, String apiName, String body) throws KintoneAPIException {
         HttpsURLConnection connection = null;
         String response = null;
 
@@ -72,7 +75,7 @@ public class Connection {
         try {
             url = this.getURL(apiName);
         } catch (MalformedURLException e) {
-            throw new KintoneAPIExeption("Invalid URL");
+            throw new KintoneAPIException("Invalid URL");
         }
 
         try {
@@ -85,7 +88,7 @@ public class Connection {
             this.setHTTPHeaders(connection); 
             connection.setRequestMethod(method);
         } catch (IOException e) {
-            throw new KintoneAPIExeption("can not open connection"); // TODO change to KintoneAPIException
+            throw new KintoneAPIException("can not open connection"); // TODO change to KintoneAPIException
         }
 
         boolean post = false;
@@ -101,7 +104,7 @@ public class Connection {
         try {
             connection.connect();
         } catch (IOException e) {
-            throw new KintoneAPIExeption(" cannot connect to host"); // TODO change to KintoneAPIException
+            throw new KintoneAPIException(" cannot connect to host"); // TODO change to KintoneAPIException
         }
 
         if (post) {
@@ -110,14 +113,14 @@ public class Connection {
             try {
                 os = connection.getOutputStream();
             } catch (IOException e) {
-                throw new KintoneAPIExeption("an error occurred while sending data");
+                throw new KintoneAPIException("an error occurred while sending data");
             }
             try {
                 OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8");
                 writer.write(body);
                 writer.close();
             } catch(IOException e) {
-                throw new KintoneAPIExeption("socket error");
+                throw new KintoneAPIException("socket error");
             }
         }
 
@@ -130,10 +133,10 @@ public class Connection {
                 is.close();
             }
         } catch (IOException e) {
-            throw new KintoneAPIExeption("an error occurred while receiving data"); // TODO change to KintoneAPIException
+            throw new KintoneAPIException("an error occurred while receiving data"); // TODO change to KintoneAPIException
         }
 
-        return response;
+        return jsonParser.parse(response);
     }
 
     private URL getURL(String apiName) throws MalformedURLException {
@@ -237,27 +240,27 @@ public class Connection {
      * @param conn
      *             a connection object
      */
-    private void checkStatus(HttpURLConnection conn) throws IOException, KintoneAPIExeption {
+    private void checkStatus(HttpURLConnection conn) throws IOException, KintoneAPIException {
         int statusCode = conn.getResponseCode();
         if (statusCode == 404) {
             ErrorResponse response = getErrorResponse(conn);
             if (response == null) {
-                throw new KintoneAPIExeption("not found");
+                throw new KintoneAPIException("not found");
             } else {
-                throw new KintoneAPIExeption(statusCode, response);
+                throw new KintoneAPIException(statusCode, response);
             }
         }
 
         if (statusCode == 401) {
-            throw new KintoneAPIExeption("401 Unauthorized");
+            throw new KintoneAPIException("401 Unauthorized");
         }
 
         if (statusCode != 200) {
             ErrorResponse response = getErrorResponse(conn);
             if (response == null) {
-                throw new KintoneAPIExeption("http status error(" + statusCode + ")");
+                throw new KintoneAPIException("http status error(" + statusCode + ")");
             } else {
-                throw new KintoneAPIExeption(statusCode, response);
+                throw new KintoneAPIException(statusCode, response);
             }
         }
     }
@@ -279,7 +282,7 @@ public class Connection {
         } catch (IOException e) {
             return null;
         }
-System.out.println(response);
+
         return gson.fromJson(response, ErrorResponse.class);
     }
 
