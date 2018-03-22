@@ -496,6 +496,7 @@ public class FormFieldParser {
         return dropDown;
     }
 
+    @SuppressWarnings("unchecked")
     private CheckboxField parseCheckboxTextType(FormFieldParseData data) throws KintoneAPIExeption {
         CheckboxField checkbox = new CheckboxField(data.getCode());
  
@@ -513,6 +514,7 @@ public class FormFieldParser {
         return checkbox;
     }
 
+    @SuppressWarnings("unchecked")
     private MultipleSelectionField parseMultiSelectTextType(FormFieldParseData data) throws KintoneAPIExeption {
         MultipleSelectionField multiSelect = new MultipleSelectionField(data.getCode());
  

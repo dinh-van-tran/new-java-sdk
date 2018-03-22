@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -47,12 +49,17 @@ public class Connection {
     private String domain;
     private int guestSpaceId;
     private List<HTTPHeader> headers = new ArrayList<HTTPHeader>();
+    private Proxy proxy = null;
 
     public Connection(String domain, Auth auth, int guestSpaceId) {
         this.domain = domain;
         this.auth = auth;
         this.guestSpaceId = guestSpaceId;
         this.userAgent += "/" + getProperties().getProperty("version");
+    }
+
+    public Connection(String domain, Auth auth) {
+        this(domain, auth, -1);
     }
 
     public String request(String method, String apiName, String body) throws KintoneAPIExeption {
@@ -67,6 +74,12 @@ public class Connection {
         }
 
         try {
+            if (this.proxy  == null) {
+                connection = (HttpsURLConnection)url.openConnection();
+            } else {
+                connection = (HttpsURLConnection)url.openConnection(this.proxy);
+            }
+
             this.setHTTPHeaders(connection); 
             connection.setRequestMethod(method);
         } catch (IOException e) {
@@ -109,19 +122,29 @@ public class Connection {
     }
 
     private URL getURL(String apiName) throws MalformedURLException {
+        if (this.domain == null || this.domain.isEmpty()) {
+            throw new NullPointerException("api is empty");
+        }
+
         if (apiName == null || apiName.isEmpty()) {
-            throw new NullPointerException("URL is empty");
+            throw new NullPointerException("api is empty");
         }
 
         StringBuilder sb = new StringBuilder();
-        if (!apiName.contains("https://")) {
-            sb.append("https://").append(apiName);
+        if (!this.domain.contains("https://")) {
+            sb.append("https://");
         }
+
+        sb.append(this.domain).append("/k/v1/").append(apiName);
 
         return new URL(sb.toString());
     }
 
     private void setHTTPHeaders(HttpURLConnection connection) {
+        for (HTTPHeader header : this.auth.createHeaderCredentials()) {
+            connection.setRequestProperty(header.getKey(), header.getValue());
+        }
+
         connection.setRequestProperty(USER_AGENT_KEY, this.userAgent);
         for (HTTPHeader header : this.headers) {
             connection.setRequestProperty(header.getKey(), header.getValue());
@@ -209,6 +232,11 @@ public class Connection {
                 throw new KintoneAPIExeption(statusCode, response);
             }
         }
+
+        if (statusCode == 401) {
+            throw new KintoneAPIExeption("401 Unauthorized");
+        }
+
         if (statusCode != 200) {
             ErrorResponse response = getErrorResponse(conn);
             if (response == null) {
@@ -236,7 +264,7 @@ public class Connection {
         } catch (IOException e) {
             return null;
         }
-
+System.out.println(response);
         return gson.fromJson(response, ErrorResponse.class);
     }
 
@@ -260,5 +288,18 @@ public class Connection {
             reader.close();
         }
         return new String(sb);
+    }
+
+    /**
+     * Sets the proxy host.
+     * 
+     * @param host
+     *            proxy host
+     * @param port
+     *            proxy port
+     */
+    public void setProxy(String host, int port) {
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host,
+                port));
     }
 }

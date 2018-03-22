@@ -22,6 +22,7 @@ public class KintoneAPIExeption extends Exception {
     private ErrorResponse errorResponse;
 
     public KintoneAPIExeption(int httpErrorCode, ErrorResponse errorResponse) {
+        super(errorResponse.getMessage());
         this.httpErrorCode = httpErrorCode;
         this.errorResponse = errorResponse;
     }
@@ -36,10 +37,26 @@ public class KintoneAPIExeption extends Exception {
     public int getHttpErrorCode() {
         return httpErrorCode;
     }
+
     /**
      * @return the errorResponse
      */
     public ErrorResponse getErrorResponse() {
         return errorResponse;
+    }
+
+    @Override
+    public String toString() {
+        if (this.errorResponse == null) {
+            return super.toString();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id: " + errorResponse.getId());
+        sb.append(", code: " + errorResponse.getCode());
+        sb.append(", message: " + errorResponse.getMessage());
+        sb.append(", status: " + this.httpErrorCode);
+
+        return sb.toString();
     }
 }

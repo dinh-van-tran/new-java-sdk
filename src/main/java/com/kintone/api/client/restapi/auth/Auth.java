@@ -77,14 +77,19 @@ public class Auth {
         this.apiToken = apiToken;
     }
 
-    List<HTTPHeader> createHeaderCredentials() {
+    public List<HTTPHeader> createHeaderCredentials() {
         List<HTTPHeader> headers = new ArrayList<HTTPHeader>();
 
-        if (this.apiToken != null) {
-            headers.add(new HTTPHeader(API_TOKEN, this.apiToken));
-        } else {
+        if (this.passwordAuth != null) {
             String passwordAuthString = this.passwordAuth.getUsername() + ":" + this.passwordAuth.getPassword();
             headers.add(new HTTPHeader(AUTH_HEADER, Base64.getEncoder().encodeToString(passwordAuthString.getBytes())));
+        } else if (this.apiToken != null) {
+            headers.add(new HTTPHeader(API_TOKEN, this.apiToken));
+        }
+
+        if (this.basicAuth != null) {
+            String basicAuthString = this.basicAuth.getUsername() + ":" + this.basicAuth.getPassword();
+            headers.add(new HTTPHeader("Authorization", "Basic " + Base64.getEncoder().encodeToString(basicAuthString.getBytes())));
         }
 
         return headers;
