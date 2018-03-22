@@ -21,10 +21,6 @@ public class ErrorResponse {
     private String id;
     private String code;
 
-    public ErrorResponse() {
-
-    }
-
     public ErrorResponse(String message, String id, String code) {
         this.message = message;
         this.id = id;

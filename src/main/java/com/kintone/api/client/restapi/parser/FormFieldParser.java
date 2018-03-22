@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kintone.api.client.restapi.exception.ParseException;
+import com.kintone.api.client.restapi.exception.KintoneAPIExeption;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
 import com.kintone.api.client.restapi.model.app.form.field.Field;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
@@ -67,10 +67,10 @@ public class FormFieldParser {
     private static final Gson gson = new Gson();
     private static final JsonParser parser = new JsonParser();
 
-    public FormFields parse(String input) throws ParseException {
+    public FormFields parse(String input) throws KintoneAPIExeption {
         JsonElement root = parser.parse(input);
         if (!root.isJsonObject()) {
-            throw new ParseException("Input is not a json object type");
+            throw new KintoneAPIExeption("Input is not a json object type");
         }
         FormFields formFields = new FormFields();
 
@@ -80,7 +80,7 @@ public class FormFieldParser {
         return formFields;
     }
 
-    private Map<String, Field> parseProperties(JsonElement input) throws ParseException {
+    private Map<String, Field> parseProperties(JsonElement input) throws KintoneAPIExeption {
         Map<String, Field> result = new HashMap<String, Field>();
         if (!input.isJsonObject()) {
             return result;
@@ -96,22 +96,22 @@ public class FormFieldParser {
         return result;
     }
 
-    private Field parseFormField(JsonElement input) throws ParseException {
+    private Field parseFormField(JsonElement input) throws KintoneAPIExeption {
         if (!input.isJsonObject()) {
             return null;
         }
         FormFieldParseData data = gson.fromJson(input, FormFieldParseData.class);
 
         if (data == null) {
-            throw new ParseException("Invalid data form stucture");
+            throw new KintoneAPIExeption("Invalid data form stucture");
         }
 
         if (data.getCode() == null || data.getCode().trim().length() == 0) {
-            throw new ParseException("Missing code when parse form field");
+            throw new KintoneAPIExeption("Missing code when parse form field");
         }
 
         if (data.getType() == null) {
-            throw new ParseException("Missing type when parse form field");
+            throw new KintoneAPIExeption("Missing type when parse form field");
         }
 
         Field formField = null;
@@ -162,22 +162,22 @@ public class FormFieldParser {
         return formField;
     }
 
-    private InputField parseInputField(JsonElement input) throws ParseException {
+    private InputField parseInputField(JsonElement input) throws KintoneAPIExeption {
         if (!input.isJsonObject()) {
             return null;
         }
         FormFieldParseData data = gson.fromJson(input, FormFieldParseData.class);
 
         if (data == null) {
-            throw new ParseException("Invalid data form stucture");
+            throw new KintoneAPIExeption("Invalid data form stucture");
         }
 
         if (data.getCode() == null || data.getCode().trim().length() == 0) {
-            throw new ParseException("Missing code when parse form field");
+            throw new KintoneAPIExeption("Missing code when parse form field");
         }
 
         if (data.getType() == null) {
-            throw new ParseException("Missing type when parse form field");
+            throw new KintoneAPIExeption("Missing type when parse form field");
         }
 
         InputField inputField = null;
@@ -250,7 +250,7 @@ public class FormFieldParser {
         return inputField;
     }
 
-    private NumberField parseNumberType(FormFieldParseData data) throws ParseException {
+    private NumberField parseNumberType(FormFieldParseData data) throws KintoneAPIExeption {
         NumberField number = new NumberField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -258,7 +258,7 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             number.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         number.setMaxValue(parseInteger(data.getMaxValue()));
@@ -271,7 +271,7 @@ public class FormFieldParser {
         return number;
     }
 
-    private Integer parseInteger(String input) throws ParseException {
+    private Integer parseInteger(String input) throws KintoneAPIExeption {
         if (input == null || input.trim().length() == 0) {
             return null;
         }
@@ -279,20 +279,20 @@ public class FormFieldParser {
         try {
             result = Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            throw new ParseException("Invalid data type");
+            throw new KintoneAPIExeption("Invalid data type");
         }
 
         return result;
     }
 
-    private LookupField parseLookupType(FormFieldParseData data) throws ParseException {
+    private LookupField parseLookupType(FormFieldParseData data) throws KintoneAPIExeption {
         LookupField lookup = new LookupField(data.getCode(), data.getType());
         lookup.setLookup(data.getLookup());
 
         return lookup;
     }
 
-    private CreatorField parseCreatorType(FormFieldParseData data) throws ParseException {
+    private CreatorField parseCreatorType(FormFieldParseData data) throws KintoneAPIExeption {
         CreatorField creator = new CreatorField(data.getCode());
         creator.setLabel(data.getLabel());
         creator.setNoLabel(data.getNoLabel());
@@ -300,7 +300,7 @@ public class FormFieldParser {
         return creator;
     }
 
-    private RecordNumberField parseRecordNumberType(FormFieldParseData data) throws ParseException {
+    private RecordNumberField parseRecordNumberType(FormFieldParseData data) throws KintoneAPIExeption {
         RecordNumberField recordNumber = new RecordNumberField(data.getCode());
         recordNumber.setLabel(data.getLabel());
         recordNumber.setNoLabel(data.getNoLabel());
@@ -308,7 +308,7 @@ public class FormFieldParser {
         return recordNumber;
     }
 
-    private CreatedTimeField parseCreatedDateTimeType(FormFieldParseData data) throws ParseException {
+    private CreatedTimeField parseCreatedDateTimeType(FormFieldParseData data) throws KintoneAPIExeption {
         CreatedTimeField createdDateTime = new CreatedTimeField(data.getCode());
         createdDateTime.setLabel(data.getLabel());
         createdDateTime.setNoLabel(data.getNoLabel());
@@ -316,7 +316,7 @@ public class FormFieldParser {
         return createdDateTime;
     }
 
-    private ModifierField parseUpdaterType(FormFieldParseData data) throws ParseException {
+    private ModifierField parseUpdaterType(FormFieldParseData data) throws KintoneAPIExeption {
         ModifierField updater = new ModifierField(data.getCode());
         updater.setLabel(data.getLabel());
         updater.setNoLabel(data.getNoLabel());
@@ -324,7 +324,7 @@ public class FormFieldParser {
         return updater;
     }
 
-    private UpdatedTime parseUpdatedDateTimeType(FormFieldParseData data) throws ParseException {
+    private UpdatedTime parseUpdatedDateTimeType(FormFieldParseData data) throws KintoneAPIExeption {
         UpdatedTime updatedDateTime = new UpdatedTime(data.getCode());
         updatedDateTime.setLabel(data.getLabel());
         updatedDateTime.setNoLabel(data.getNoLabel());
@@ -332,7 +332,7 @@ public class FormFieldParser {
         return updatedDateTime;
     }
 
-    private StatusField parseStatusType(FormFieldParseData data) throws ParseException {
+    private StatusField parseStatusType(FormFieldParseData data) throws KintoneAPIExeption {
         StatusField status = new StatusField(data.getCode());
         status.setLabel(data.getLabel());
         status.setEnabled(data.getEnabled());
@@ -340,7 +340,7 @@ public class FormFieldParser {
         return status;
     }
 
-    private AssigneeField parseAssigneeType(FormFieldParseData data) throws ParseException {
+    private AssigneeField parseAssigneeType(FormFieldParseData data) throws KintoneAPIExeption {
         AssigneeField assignee = new AssigneeField(data.getCode());
         assignee.setLabel(data.getLabel());
         assignee.setEnabled(data.getEnabled());
@@ -348,7 +348,7 @@ public class FormFieldParser {
         return assignee;
     }
 
-    private CategoryField parseCategoryType(FormFieldParseData data) throws ParseException {
+    private CategoryField parseCategoryType(FormFieldParseData data) throws KintoneAPIExeption {
         CategoryField category = new CategoryField(data.getCode());
         category.setLabel(data.getLabel());
         category.setEnabled(data.getEnabled());
@@ -356,7 +356,7 @@ public class FormFieldParser {
         return category;
     }
 
-    private RichTextField parseRichTextType(FormFieldParseData data) throws ParseException {
+    private RichTextField parseRichTextType(FormFieldParseData data) throws KintoneAPIExeption {
         RichTextField richText = new RichTextField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -364,13 +364,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             richText.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
   
         return richText;
     }
 
-    private LinkField parseLinkType(FormFieldParseData data) throws ParseException {
+    private LinkField parseLinkType(FormFieldParseData data) throws KintoneAPIExeption {
         LinkField link = new LinkField(data.getCode());
  
         link.setProtocol(data.getProtocol());
@@ -382,13 +382,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             link.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
   
         return link;
     }
 
-    private TimeField parseTimeFieldType(FormFieldParseData data) throws ParseException {
+    private TimeField parseTimeFieldType(FormFieldParseData data) throws KintoneAPIExeption {
         TimeField time = new TimeField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -396,14 +396,14 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             time.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
         time.setDefaultNowValue(data.getDefaultNowValue());
   
         return time;
     }
 
-    private TimeField parseDateFieldType(FormFieldParseData data) throws ParseException {
+    private TimeField parseDateFieldType(FormFieldParseData data) throws KintoneAPIExeption {
         DateField date = new DateField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -411,14 +411,14 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             date.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
         date.setDefaultNowValue(data.getDefaultNowValue());
   
         return date;
     }
 
-    private TimeField parseDateTimeFieldType(FormFieldParseData data) throws ParseException {
+    private TimeField parseDateTimeFieldType(FormFieldParseData data) throws KintoneAPIExeption {
         DateTimeField datetime = new DateTimeField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -426,14 +426,14 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             datetime.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
         datetime.setDefaultNowValue(data.getDefaultNowValue());
   
         return datetime;
     }
 
-    private FieldGroup parseFieldGroupType(FormFieldParseData data) throws ParseException {
+    private FieldGroup parseFieldGroupType(FormFieldParseData data) throws KintoneAPIExeption {
         FieldGroup fieldGroup = new FieldGroup(data.getCode());
  
         fieldGroup.setLabel(data.getLabel());
@@ -443,7 +443,7 @@ public class FormFieldParser {
         return fieldGroup;
     }
 
-    private Attachment parseAttachmentType(FormFieldParseData data) throws ParseException {
+    private Attachment parseAttachmentType(FormFieldParseData data) throws KintoneAPIExeption {
         Attachment attachment = new Attachment(data.getCode());
  
         attachment.setThumbnailSize(parseInteger(data.getThumbnailSize()));
@@ -451,7 +451,7 @@ public class FormFieldParser {
         return attachment;
     }
 
-    private SingleLineTextField parseSingleLineTextType(FormFieldParseData data) throws ParseException {
+    private SingleLineTextField parseSingleLineTextType(FormFieldParseData data) throws KintoneAPIExeption {
         SingleLineTextField text = new SingleLineTextField(data.getCode());
  
         text.setExpression(data.getExpression());
@@ -462,12 +462,12 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             text.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
         return text;
     }
 
-    private MultiLineText parseMultiLineTextType(FormFieldParseData data) throws ParseException {
+    private MultiLineText parseMultiLineTextType(FormFieldParseData data) throws KintoneAPIExeption {
         MultiLineText textArea = new MultiLineText(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -475,12 +475,12 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             textArea.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
         return textArea;
     }
 
-    private DropDownField parseDropDownTextType(FormFieldParseData data) throws ParseException {
+    private DropDownField parseDropDownTextType(FormFieldParseData data) throws KintoneAPIExeption {
         DropDownField dropDown = new DropDownField(data.getCode());
  
         dropDown.setOptions(data.getOptions());
@@ -490,13 +490,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             dropDown.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return dropDown;
     }
 
-    private CheckboxField parseCheckboxTextType(FormFieldParseData data) throws ParseException {
+    private CheckboxField parseCheckboxTextType(FormFieldParseData data) throws KintoneAPIExeption {
         CheckboxField checkbox = new CheckboxField(data.getCode());
  
         checkbox.setOptions(data.getOptions());
@@ -507,13 +507,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof List) {
             checkbox.setDefaultValue((List)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return checkbox;
     }
 
-    private MultipleSelectionField parseMultiSelectTextType(FormFieldParseData data) throws ParseException {
+    private MultipleSelectionField parseMultiSelectTextType(FormFieldParseData data) throws KintoneAPIExeption {
         MultipleSelectionField multiSelect = new MultipleSelectionField(data.getCode());
  
         multiSelect.setOptions(data.getOptions());
@@ -523,13 +523,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof List) {
             multiSelect.setDefaultValue((List)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return multiSelect;
     }
 
-    private RadioButtonField parseRadioButtonType(FormFieldParseData data) throws ParseException {
+    private RadioButtonField parseRadioButtonType(FormFieldParseData data) throws KintoneAPIExeption {
         RadioButtonField radioBtn = new RadioButtonField(data.getCode());
  
         radioBtn.setOptions(data.getOptions());
@@ -540,13 +540,13 @@ public class FormFieldParser {
         } else if (data.getDefaultValue() instanceof String) {
             radioBtn.setDefaultValue((String)data.getDefaultValue());
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return radioBtn;
     }
 
-    private RelatedRecordsField parseRelatedRecordType(FormFieldParseData data) throws ParseException {
+    private RelatedRecordsField parseRelatedRecordType(FormFieldParseData data) throws KintoneAPIExeption {
         RelatedRecordsField relatedRecord = new RelatedRecordsField(data.getCode());
         relatedRecord.setLabel(data.getLabel());
         relatedRecord.setNoLabel(data.getNoLabel());
@@ -556,7 +556,7 @@ public class FormFieldParser {
     }
 
     @SuppressWarnings("unchecked")
-    private UserSelectionField parseUserSelectionType(FormFieldParseData data) throws ParseException {
+    private UserSelectionField parseUserSelectionType(FormFieldParseData data) throws KintoneAPIExeption {
         UserSelectionField userSelection = new UserSelectionField(data.getCode());
         userSelection.setEntites(data.getEntities());
 
@@ -582,14 +582,14 @@ public class FormFieldParser {
 
             userSelection.setDefaultValue(defaultValue);
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return userSelection;
     }
 
     @SuppressWarnings("unchecked")
-    private GroupSelectionField parseGroupSelectionType(FormFieldParseData data) throws ParseException {
+    private GroupSelectionField parseGroupSelectionType(FormFieldParseData data) throws KintoneAPIExeption {
         GroupSelectionField groupSelection = new GroupSelectionField(data.getCode());
         groupSelection.setEntites(data.getEntities());
 
@@ -615,14 +615,14 @@ public class FormFieldParser {
 
             groupSelection.setDefaultValue(defaultValue);
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return groupSelection;
     }
 
     @SuppressWarnings("unchecked")
-    private DepartmentSelectionField parseDepartmentSelectionType(FormFieldParseData data) throws ParseException {
+    private DepartmentSelectionField parseDepartmentSelectionType(FormFieldParseData data) throws KintoneAPIExeption {
         DepartmentSelectionField departSelect = new DepartmentSelectionField(data.getCode());
         departSelect.setEntites(data.getEntities());
 
@@ -648,13 +648,13 @@ public class FormFieldParser {
 
             departSelect.setDefaultValue(defaultValue);
         } else {
-            throw new ParseException("Invalid default value data type:" + data.getDefaultValue());
+            throw new KintoneAPIExeption("Invalid default value data type:" + data.getDefaultValue());
         }
 
         return departSelect;
     }
 
-    private Table parseSubTableType(FormFieldParseData data) throws ParseException {
+    private Table parseSubTableType(FormFieldParseData data) throws KintoneAPIExeption {
         Table subtable = new Table(data.getCode());
 
         Map<String, InputField> fields = new HashMap<String, InputField>();

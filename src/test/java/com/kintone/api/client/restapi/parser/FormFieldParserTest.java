@@ -13,10 +13,10 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.kintone.api.client.restapi.exception.ParseException;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
 import com.kintone.api.client.restapi.model.app.form.field.FieldMapping;
 import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.exception.KintoneAPIExeption;
 import com.kintone.api.client.restapi.model.app.form.field.Field;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.Table;
@@ -109,7 +109,7 @@ public class FormFieldParserTest {
             if (formFields.getRevision() < 0) {
                 fail("Invalid revision value");
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -144,7 +144,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -184,7 +184,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -210,7 +210,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -236,7 +236,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -262,7 +262,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -288,7 +288,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -314,7 +314,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -340,7 +340,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -366,7 +366,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -392,7 +392,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -420,7 +420,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -452,7 +452,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -479,7 +479,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -508,7 +508,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -538,7 +538,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -568,7 +568,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -596,7 +596,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -629,7 +629,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -657,7 +657,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -699,7 +699,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -757,7 +757,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -805,7 +805,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -850,7 +850,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -897,7 +897,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -938,7 +938,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -973,7 +973,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -1008,7 +1008,7 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
@@ -1055,13 +1055,13 @@ public class FormFieldParserTest {
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
-        } catch (ParseException e) {
+        } catch (KintoneAPIExeption e) {
             fail(e.getMessage());
         }
     }
 
-    @Test(expected = ParseException.class)
-    public void testParseShouldFailWhenGivenNoCode() throws ParseException {
+    @Test(expected = KintoneAPIExeption.class)
+    public void testParseShouldFailWhenGivenNoCode() throws KintoneAPIExeption {
         String invalidMaxValue = readInput("/form/field/NonCodeValue.txt");
 
         assertNotNull(invalidMaxValue);
@@ -1070,8 +1070,8 @@ public class FormFieldParserTest {
         parser.parse(invalidMaxValue);
     }
 
-    @Test(expected = ParseException.class)
-    public void testParseShouldFailWhenGivenNoField() throws ParseException {
+    @Test(expected = KintoneAPIExeption.class)
+    public void testParseShouldFailWhenGivenNoField() throws KintoneAPIExeption {
         String invalidMaxValue = readInput("/form/field/NonTypeValue.txt");
 
         assertNotNull(invalidMaxValue);
@@ -1080,8 +1080,8 @@ public class FormFieldParserTest {
         parser.parse(invalidMaxValue);
     }
 
-    @Test(expected = ParseException.class)
-    public void testParseShouldFailWhenGivenInvalidMaxValue() throws ParseException {
+    @Test(expected = KintoneAPIExeption.class)
+    public void testParseShouldFailWhenGivenInvalidMaxValue() throws KintoneAPIExeption {
         String invalidMaxValue = readInput("/form/field/InvalidMaxValue.txt");
 
         assertNotNull(invalidMaxValue);
@@ -1090,8 +1090,8 @@ public class FormFieldParserTest {
         parser.parse(invalidMaxValue);
     }
 
-    @Test(expected = ParseException.class)
-    public void testParseShouldFailWhenGivenInvalidMinValue() throws ParseException {
+    @Test(expected = KintoneAPIExeption.class)
+    public void testParseShouldFailWhenGivenInvalidMinValue() throws KintoneAPIExeption {
         String invalidMaxValue = readInput("/form/field/InvalidMinValue.txt");
 
         assertNotNull(invalidMaxValue);

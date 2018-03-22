@@ -14,12 +14,29 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.exception;
+package com.kintone.api.client.restapi.auth;
 
-public class ParseException extends Exception {
-    private static final long serialVersionUID = 5964549193097124240L;
+public class HTTPHeader {
+    private String key;
+    private String value;
 
-    public ParseException(String message) {
-        super(message);
+    
+    public HTTPHeader(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    /**
+     * @return the key
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * @return the value
+     */
+    public String getValue() {
+        return value;
     }
 }
