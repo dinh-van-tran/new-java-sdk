@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -103,11 +105,24 @@ public class Connection {
         }
 
         if (post) {
-            // TODO implement send data in POST/PUT/DELETE
+            // send request
+            OutputStream os;
+            try {
+                os = connection.getOutputStream();
+            } catch (IOException e) {
+                throw new KintoneAPIExeption("an error occurred while sending data");
+            }
+            try {
+                OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8");
+                writer.write(body);
+                writer.close();
+            } catch(IOException e) {
+                throw new KintoneAPIExeption("socket error");
+            }
         }
 
         try {
-            checkStatus(connection); // TODO implement checkStatus
+            checkStatus(connection);
             InputStream is = connection.getInputStream();
             try {
                 response = readStream(is);
