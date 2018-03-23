@@ -22,14 +22,19 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.kintone.api.client.restapi.auth.Auth;
 import com.kintone.api.client.restapi.connection.Connection;
+import com.kintone.api.client.restapi.constant.LanguageSetting;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
+import com.kintone.api.client.restapi.model.app.form.field.FormFields;
+import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
 
 public class AppManagermentTest {
     private AppManagement appManagerment;
@@ -205,5 +210,49 @@ public class AppManagermentTest {
         spaceIds.add(-1);
         List<App> apps = this.appManagerment.getAppsBySpaceIDs(spaceIds, null, null);
         assertTrue(apps.isEmpty());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormFielsShouldFailWhenGivenNoAppId() throws KintoneAPIException {
+        this.appManagerment.getFormFields(null, null);
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormFielsShouldFailWhenGivenNonExistAppId() throws KintoneAPIException {
+        this.appManagerment.getFormFields(1, null);
+    }
+
+    @Test
+    public void testGetFormFielsShouldSuccess() throws KintoneAPIException {
+        FormFields formfields = this.appManagerment.getFormFields(142, null);
+        assertNotNull(formfields);
+        Map<String, FormField> properties = formfields.getProperties();
+        assertNotNull(properties);
+        assertEquals(14, properties.size());
+    }
+
+    @Test
+    public void testGetFormFielsShouldReturnCorrectLanguageSetting() throws KintoneAPIException {
+        // test with English language setting
+        FormFields formfields = this.appManagerment.getFormFields(142, LanguageSetting.EN);
+        assertNotNull(formfields);
+        Map<String, FormField> properties = formfields.getProperties();
+        assertNotNull(properties);
+        assertEquals(14, properties.size());
+
+        FormField recordNumber = properties.get("レコード番号");
+        assertTrue(recordNumber instanceof RecordNumberField);
+        assertEquals("Record No.", ((RecordNumberField)recordNumber).getLabel());
+
+        // Test with Japanese language setting
+        formfields = this.appManagerment.getFormFields(142, LanguageSetting.JA);
+        assertNotNull(formfields);
+        properties = formfields.getProperties();
+        assertNotNull(properties);
+        assertEquals(14, properties.size());
+
+        recordNumber = properties.get("レコード番号");
+        assertTrue(recordNumber instanceof RecordNumberField);
+        assertEquals("レコード番号", ((RecordNumberField)recordNumber).getLabel());
     }
 }

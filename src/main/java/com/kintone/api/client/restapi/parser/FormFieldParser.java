@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
-import com.kintone.api.client.restapi.model.app.form.field.Field;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.Table;
 import com.kintone.api.client.restapi.model.app.form.field.input.Attachment;
@@ -65,10 +65,8 @@ import com.kintone.api.client.restapi.model.app.form.field.system.ModifierField;
 
 public class FormFieldParser {
     private static final Gson gson = new Gson();
-    private static final JsonParser parser = new JsonParser();
 
-    public FormFields parse(String input) throws KintoneAPIException {
-        JsonElement root = parser.parse(input);
+    public FormFields parse(JsonElement root) throws KintoneAPIException {
         if (!root.isJsonObject()) {
             throw new KintoneAPIException("Input is not a json object type");
         }
@@ -80,15 +78,15 @@ public class FormFieldParser {
         return formFields;
     }
 
-    private Map<String, Field> parseProperties(JsonElement input) throws KintoneAPIException {
-        Map<String, Field> result = new HashMap<String, Field>();
+    private Map<String, FormField> parseProperties(JsonElement input) throws KintoneAPIException {
+        Map<String, FormField> result = new HashMap<String, FormField>();
         if (!input.isJsonObject()) {
             return result;
         }
 
         Set<Map.Entry<String, JsonElement>> entries = input.getAsJsonObject().entrySet();
         for (Map.Entry<String, JsonElement> entry : entries) {
-            Field formField = parseFormField(entry.getValue());
+            FormField formField = parseFormField(entry.getValue());
             if (formField != null) {
                 result.put(formField.getCode(), formField);
             }
@@ -96,7 +94,7 @@ public class FormFieldParser {
         return result;
     }
 
-    private Field parseFormField(JsonElement input) throws KintoneAPIException {
+    private FormField parseFormField(JsonElement input) throws KintoneAPIException {
         if (!input.isJsonObject()) {
             return null;
         }
@@ -114,7 +112,7 @@ public class FormFieldParser {
             throw new KintoneAPIException("Missing type when parse form field");
         }
 
-        Field formField = null;
+        FormField formField = null;
         // Parse Lookup first to avoid confusing with NUMBER or TEXT type.
         if (data.getLookup() != null) {
             formField =  parseInputField(input);

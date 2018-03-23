@@ -21,7 +21,7 @@ import java.util.Map;
 
 import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
 
-public class Table extends Field {
+public class Table extends FormField {
     protected Map<String, InputField> fields = new HashMap<String, InputField>();
 
     public Table() {

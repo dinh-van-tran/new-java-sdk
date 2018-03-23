@@ -16,9 +16,9 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.Field;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
 
-public abstract class InputField extends Field {
+public abstract class InputField extends FormField {
     protected String label;
     protected Boolean noLabel;
     protected Boolean required;

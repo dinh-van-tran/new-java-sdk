@@ -16,6 +16,6 @@
 
 package com.kintone.api.client.restapi.model.app.form.layout;
 
-public class Layout {
+public class FormLayout {
 
 }

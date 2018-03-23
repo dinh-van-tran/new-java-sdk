@@ -17,9 +17,9 @@
 package com.kintone.api.client.restapi.model.app.form.field.relatedrecord;
 
 import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.Field;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
 
-public class RelatedRecordsField extends Field {
+public class RelatedRecordsField extends FormField {
     protected String label;
     protected Boolean noLabel;
     protected ReferenceTable referenceTable;

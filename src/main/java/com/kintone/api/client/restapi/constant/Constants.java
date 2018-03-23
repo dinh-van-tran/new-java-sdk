@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi;
+package com.kintone.api.client.restapi.constant;
 
 public class Constants {
 

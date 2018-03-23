@@ -16,7 +16,7 @@
 
 package com.kintone.api.client.restapi.model.app.form.field;
 
-public abstract class Field {
+public abstract class FormField {
     protected String code = "";
     protected FieldType type;
 
@@ -64,7 +64,7 @@ public abstract class Field {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Field other = (Field) obj;
+        FormField other = (FormField) obj;
         if (code == null) {
             if (other.code != null)
                 return false;

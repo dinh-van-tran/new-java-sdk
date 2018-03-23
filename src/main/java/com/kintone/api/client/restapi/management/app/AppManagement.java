@@ -27,9 +27,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kintone.api.client.restapi.connection.Connection;
+import com.kintone.api.client.restapi.constant.LanguageSetting;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
+import com.kintone.api.client.restapi.model.app.form.field.FormFields;
+import com.kintone.api.client.restapi.model.app.form.layout.FormLayout;
 import com.kintone.api.client.restapi.model.member.UserBase;
+import com.kintone.api.client.restapi.parser.FormFieldParser;
 
 public class AppManagement {
     private static final Gson gson = new Gson();
@@ -168,5 +172,33 @@ public class AppManagement {
         }
 
         return result;
+    }
+
+    public FormFields getFormFields(Integer appId, LanguageSetting lang) throws KintoneAPIException {
+        if (appId == null || appId < 0) {
+            throw new KintoneAPIException("Invalid app id value:" + appId);
+        }
+
+        if (lang == null) {
+            lang = LanguageSetting.DEFAULT;
+        }
+
+        StringBuilder apiRequest = new StringBuilder();
+        apiRequest.append("app/form/fields.json");
+        apiRequest.append("?app=").append(appId);
+        apiRequest.append("&lang=").append(lang);
+
+        JsonElement response = connection.request("GET", apiRequest.toString(), null);
+        return parseFormFields(response);
+    }
+
+    private FormFields parseFormFields(JsonElement response) throws KintoneAPIException {
+        FormFieldParser parser = new FormFieldParser();
+        return parser.parse(response);
+    }
+
+    public FormLayout getFormLayout(Integer app) {
+        // TODO implement
+        return null;
     }
 }

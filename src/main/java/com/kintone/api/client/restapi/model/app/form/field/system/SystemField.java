@@ -16,9 +16,9 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.Field;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
 
-public abstract class SystemField extends Field {
+public abstract class SystemField extends FormField {
     protected String label;
 
     /**

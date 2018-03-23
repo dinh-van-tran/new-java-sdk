@@ -32,8 +32,10 @@ import org.junit.Test;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
 import com.kintone.api.client.restapi.model.app.form.field.FieldMapping;
 import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
-import com.kintone.api.client.restapi.model.app.form.field.Field;
+import com.kintone.api.client.restapi.model.app.form.field.FormField;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.Table;
 import com.kintone.api.client.restapi.model.app.form.field.input.Attachment;
@@ -74,11 +76,12 @@ import com.kintone.api.client.restapi.model.app.form.field.system.UpdatedTime;
 import com.kintone.api.client.restapi.model.app.form.field.system.ModifierField;
 
 public class FormFieldParserTest {
-    private static String validInput;
+    private static final JsonParser jsonParser = new JsonParser();
+    private static JsonElement validInput;
 
     @BeforeClass
     public static void setup() {
-        validInput = readInput("/form/field/ValidJsonFormFields.txt");
+        validInput = jsonParser.parse(readInput("/form/field/ValidJsonFormFields.txt"));
     }
 
     private static String readInput(String file) {
@@ -140,7 +143,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 NumberField number = (NumberField) properties.get("Number");
                 assertNotNull(number);
@@ -175,7 +178,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 LookupField lookup = (LookupField) properties.get("Lookup");
                 assertNotNull(lookup);
@@ -215,7 +218,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 CreatorField creator = (CreatorField) properties.get("Created_by");
                 assertNotNull(creator);
@@ -241,7 +244,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 CreatedTimeField createdDateTime = (CreatedTimeField) properties.get("Created_datetime");
                 assertNotNull(createdDateTime);
@@ -267,7 +270,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 RecordNumberField recordNumber = (RecordNumberField) properties.get("Record_number");
                 assertNotNull(recordNumber);
@@ -293,7 +296,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 ModifierField updater = (ModifierField) properties.get("Updated_by");
                 assertNotNull(updater);
@@ -319,7 +322,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 UpdatedTime updatedDateTime = (UpdatedTime) properties.get("Updated_datetime");
                 assertNotNull(updatedDateTime);
@@ -345,7 +348,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 StatusField status = (StatusField) properties.get("Status");
                 assertNotNull(status);
@@ -371,7 +374,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 AssigneeField assignee = (AssigneeField) properties.get("Assignee");
                 assertNotNull(assignee);
@@ -397,7 +400,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 CategoryField category = (CategoryField) properties.get("Categories");
                 assertNotNull(category);
@@ -423,7 +426,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 RichTextField richText = (RichTextField) properties.get("Rich_text");
                 assertNotNull(richText);
@@ -451,7 +454,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 LinkField link = (LinkField) properties.get("Link");
                 assertNotNull(link);
@@ -483,7 +486,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 FieldGroup fieldGroup = (FieldGroup) properties.get("Field_group");
                 assertNotNull(fieldGroup);
@@ -510,7 +513,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 TimeField timeField = (TimeField) properties.get("Time");
                 assertNotNull(timeField);
@@ -539,7 +542,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 DateField dateField = (DateField) properties.get("Date");
                 assertNotNull(dateField);
@@ -569,7 +572,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 DateTimeField dateTimeField = (DateTimeField) properties.get("Date_and_time");
                 assertNotNull(dateTimeField);
@@ -599,7 +602,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 Attachment attachment = (Attachment) properties.get("Attachment");
                 assertNotNull(attachment);
@@ -627,7 +630,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 SingleLineTextField text = (SingleLineTextField) properties.get("Text");
                 assertNotNull(text);
@@ -660,7 +663,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 MultiLineText textArea = (MultiLineText) properties.get("Text_Area");
                 assertNotNull(textArea);
@@ -688,7 +691,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 DropDownField dropDown = (DropDownField) properties.get("Drop_down");
                 assertNotNull(dropDown);
@@ -730,7 +733,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 MultipleSelectionField multiSelect = (MultipleSelectionField) properties.get("Multi_choice");
                 assertNotNull(multiSelect);
@@ -788,7 +791,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 CheckboxField checkbox = (CheckboxField) properties.get("Check_box");
                 assertNotNull(checkbox);
@@ -836,7 +839,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 RadioButtonField radioBtn = (RadioButtonField) properties.get("Radio_Button");
                 assertNotNull(radioBtn);
@@ -881,7 +884,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 RelatedRecordsField relatedRecords = (RelatedRecordsField) properties.get("Related_Records");
                 assertNotNull(relatedRecords);
@@ -928,7 +931,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 UserSelectionField userSelect = (UserSelectionField) properties.get("User_selection");
                 assertNotNull(userSelect);
@@ -969,7 +972,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 GroupSelectionField groupSelect = (GroupSelectionField) properties.get("Group_selection");
                 assertNotNull(groupSelect);
@@ -1004,7 +1007,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 DepartmentSelectionField departSelect = (DepartmentSelectionField) properties.get("Department_selection");
                 assertNotNull(departSelect);
@@ -1039,7 +1042,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, Field> properties = formFields.getProperties();
+            Map<String, FormField> properties = formFields.getProperties();
             try {
                 Table subTable = (Table) properties.get("Table");
                 assertNotNull(subTable);
@@ -1083,7 +1086,7 @@ public class FormFieldParserTest {
         assertNotNull(invalidMaxValue);
 
         FormFieldParser parser = new FormFieldParser();
-        parser.parse(invalidMaxValue);
+        parser.parse(jsonParser.parse(invalidMaxValue));
     }
 
     @Test(expected = KintoneAPIException.class)
@@ -1093,7 +1096,7 @@ public class FormFieldParserTest {
         assertNotNull(invalidMaxValue);
 
         FormFieldParser parser = new FormFieldParser();
-        parser.parse(invalidMaxValue);
+        parser.parse(jsonParser.parse(invalidMaxValue));
     }
 
     @Test(expected = KintoneAPIException.class)
@@ -1103,7 +1106,7 @@ public class FormFieldParserTest {
         assertNotNull(invalidMaxValue);
 
         FormFieldParser parser = new FormFieldParser();
-        parser.parse(invalidMaxValue);
+        parser.parse(jsonParser.parse(invalidMaxValue));
     }
 
     @Test(expected = KintoneAPIException.class)
@@ -1113,6 +1116,6 @@ public class FormFieldParserTest {
         assertNotNull(invalidMaxValue);
 
         FormFieldParser parser = new FormFieldParser();
-        parser.parse(invalidMaxValue);
+        parser.parse(jsonParser.parse(invalidMaxValue));
     }
 }
