@@ -19,11 +19,13 @@ package com.kintone.api.client.restapi.model.app.form.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kintone.api.client.restapi.constant.LayoutType;
+
 public class RowLayout extends ItemLayout {
     private List<FieldLayout> fields = new ArrayList<FieldLayout>();
 
     public RowLayout() {
-
+        this.type = LayoutType.ROW;
     }
 
     /**

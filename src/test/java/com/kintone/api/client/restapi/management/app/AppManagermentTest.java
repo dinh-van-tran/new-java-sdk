@@ -35,6 +35,8 @@ import com.kintone.api.client.restapi.model.app.App;
 import com.kintone.api.client.restapi.model.app.form.field.FormField;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
+import com.kintone.api.client.restapi.model.app.form.layout.FormLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.ItemLayout;
 
 public class AppManagermentTest {
     private AppManagement appManagerment;
@@ -254,5 +256,31 @@ public class AppManagermentTest {
         recordNumber = properties.get("レコード番号");
         assertTrue(recordNumber instanceof RecordNumberField);
         assertEquals("レコード番号", ((RecordNumberField)recordNumber).getLabel());
+    }
+
+    @Test
+    public void testGetFormLayoutShouldSuccess() throws KintoneAPIException {
+        FormLayout formLayout = this.appManagerment.getFormLayout(137);
+
+        assertNotNull(formLayout);
+
+        List<ItemLayout> layout = formLayout.getLayout();
+        assertNotNull(layout);
+        assertEquals(9, layout.size());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenGiveNoAppId() throws KintoneAPIException {
+        this.appManagerment.getFormLayout(null);
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenGiveInvalidAppId() throws KintoneAPIException {
+        this.appManagerment.getFormLayout(-1);
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenGiveNonExistAppId() throws KintoneAPIException {
+        this.appManagerment.getFormLayout(1);
     }
 }

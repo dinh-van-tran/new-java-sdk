@@ -19,12 +19,14 @@ package com.kintone.api.client.restapi.model.app.form.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kintone.api.client.restapi.constant.LayoutType;
+
 public class SubTableLayout extends ItemLayout {
     private String code;
     private List<FieldLayout> fields = new ArrayList<FieldLayout>();
 
     public SubTableLayout() {
-        
+        this.type = LayoutType.SUBTABLE;
     }
 
     /**

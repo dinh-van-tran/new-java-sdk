@@ -19,12 +19,14 @@ package com.kintone.api.client.restapi.model.app.form.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kintone.api.client.restapi.constant.LayoutType;
+
 public class GroupLayout extends ItemLayout {
     private String code;
     private List<RowLayout> layout = new ArrayList<RowLayout>();
 
     public GroupLayout() {
-        
+        this.type = LayoutType.GROUP;
     }
 
     /**

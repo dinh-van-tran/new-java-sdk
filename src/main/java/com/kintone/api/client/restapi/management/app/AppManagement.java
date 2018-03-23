@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kintone.api.client.restapi.connection.Connection;
@@ -31,7 +32,13 @@ import com.kintone.api.client.restapi.constant.LanguageSetting;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
+import com.kintone.api.client.restapi.model.app.form.layout.FieldLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.FieldSize;
 import com.kintone.api.client.restapi.model.app.form.layout.FormLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.GroupLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.ItemLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.RowLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.SubTableLayout;
 import com.kintone.api.client.restapi.model.member.UserBase;
 import com.kintone.api.client.restapi.parser.FormFieldParser;
 
@@ -197,8 +204,137 @@ public class AppManagement {
         return parser.parse(response);
     }
 
-    public FormLayout getFormLayout(Integer app) {
-        // TODO implement
-        return null;
+    public FormLayout getFormLayout(Integer appId) throws KintoneAPIException {
+        if (appId == null || appId < 0) {
+            throw new KintoneAPIException("Invalid app id value: " + appId);
+        }
+
+        StringBuilder apiRequest = new StringBuilder();
+        apiRequest.append("app/form/layout.json");
+        apiRequest.append("?app=").append(appId);
+
+        JsonElement response = connection.request("GET", apiRequest.toString(), null);
+        return parseFormLayout(response);
+    }
+
+    private FormLayout parseFormLayout(JsonElement input) throws KintoneAPIException {
+        if (!input.isJsonObject()) {
+            throw new KintoneAPIException("Parse error");
+        }
+
+        JsonObject root = input.getAsJsonObject();
+        FormLayout formLayout = new FormLayout();
+
+        formLayout.setRevision(root.get("revision").getAsString());
+
+        JsonArray layoutProperties = root.get("layout").getAsJsonArray();
+        Iterator<JsonElement> iterator = layoutProperties.iterator();
+        while (iterator.hasNext()) {
+            formLayout.getLayout().add(parseItemLayout(iterator.next()));
+        }
+
+        return formLayout;
+    }
+
+    private ItemLayout parseItemLayout(JsonElement input) throws KintoneAPIException {
+        if (!input.isJsonObject()) {
+            throw new KintoneAPIException("Parse error");
+        }
+
+        JsonObject root = input.getAsJsonObject();
+        switch(root.get("type").getAsString()) {
+            case "ROW":
+                return parseRowLayout(root);
+            case "SUBTABLE":
+                return parseSubTableLayout(root);
+            case "GROUP":
+                return parseGroupLayout(root);
+            default:
+                throw new KintoneAPIException("Layout type is not supported");
+        }
+    }
+
+    private GroupLayout parseGroupLayout(JsonObject root) {
+        GroupLayout groupLayout = new GroupLayout();
+        groupLayout.setCode(root.get("code").getAsString());
+
+        JsonArray layout = root.get("layout").getAsJsonArray();
+        Iterator<JsonElement> iterator = layout.iterator();
+        while(iterator.hasNext()) {
+            groupLayout.getLayout().add(parseRowLayout(iterator.next().getAsJsonObject()));
+        }
+
+        return groupLayout;
+    }
+
+    private SubTableLayout parseSubTableLayout(JsonObject root) {
+        SubTableLayout subTableLayout = new SubTableLayout();
+
+        subTableLayout.setCode(root.get("code").getAsString());
+
+        JsonArray fields = root.get("fields").getAsJsonArray();
+        Iterator<JsonElement> iterator = fields.iterator();
+        while(iterator.hasNext()) {
+            subTableLayout.getFields().add(parseFieldLayout(iterator.next()));
+        }
+
+        return subTableLayout;
+    }
+
+    private RowLayout parseRowLayout(JsonObject root) {
+        RowLayout rowLayout = new RowLayout();
+        JsonArray fields = root.get("fields").getAsJsonArray();
+
+        Iterator<JsonElement> iterator = fields.iterator();
+        while(iterator.hasNext()) {
+            rowLayout.getFields().add(parseFieldLayout(iterator.next()));
+        }
+
+        return rowLayout;
+    }
+
+    private FieldLayout parseFieldLayout(JsonElement input) {
+        JsonObject root = input.getAsJsonObject();
+        FieldLayout fieldLayout = new FieldLayout();
+
+        JsonElement code = root.get("code");
+        if (code != null && code.isJsonPrimitive()) {
+            fieldLayout.setCode(code.getAsString());
+        }
+
+        JsonElement label = root.get("label");
+        if (label != null && label.isJsonPrimitive()) {
+            fieldLayout.setLabel(label.getAsString());
+        }
+
+        JsonElement elementId = root.get("elementId");
+        if (elementId != null && elementId.isJsonPrimitive()) {
+            fieldLayout.setElementId(elementId.getAsString());
+        }
+
+        fieldLayout.setSize(parseFieldSize(root.get("size").getAsJsonObject()));
+
+        return fieldLayout;
+    }
+
+    private FieldSize parseFieldSize(JsonObject root) {
+        FieldSize fieldSize = new FieldSize();
+
+        JsonElement width = root.get("width");
+        if (width != null && width.isJsonPrimitive()) {
+            fieldSize.setWidth(width.getAsString());
+        }
+
+        JsonElement height = root.get("height");
+        if (height != null && height.isJsonPrimitive()) {
+            fieldSize.setHeight(height.getAsString());
+        }
+
+        JsonElement innerHeight = root.get("innerHeight");
+        if (innerHeight != null && innerHeight.isJsonPrimitive()) {
+            fieldSize.setInnerHeight(innerHeight.getAsString());
+        }
+
+        return fieldSize;
     }
 }

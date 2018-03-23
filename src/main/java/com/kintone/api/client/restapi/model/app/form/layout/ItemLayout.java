@@ -19,20 +19,12 @@ package com.kintone.api.client.restapi.model.app.form.layout;
 import com.kintone.api.client.restapi.constant.LayoutType;
 
 public abstract class ItemLayout {
-    private LayoutType type;
+    protected LayoutType type;
 
     /**
      * @return the type
      */
     public LayoutType getType() {
         return type;
-    }
-
-    /**
-     * @param type
-     *            the type to set
-     */
-    public void setType(LayoutType type) {
-        this.type = type;
     }
 }
