@@ -16,42 +16,20 @@
 
 package com.kintone.api.client.restapi.model.app.form.layout;
 
-import java.util.ArrayList;
-import java.util.List;
+public abstract class ItemLayout {
+    private String type;
 
-public class FormLayout {
-    private String revision;
-    private List<ItemLayout> layout = new ArrayList<ItemLayout>();
-
-    public FormLayout() {
-        
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
     }
 
     /**
-     * @return the revision
+     * @param type the type to set
      */
-    public String getRevision() {
-        return revision;
-    }
-
-    /**
-     * @param revision the revision to set
-     */
-    public void setRevision(String revision) {
-        this.revision = revision;
-    }
-
-    /**
-     * @return the layout
-     */
-    public List<ItemLayout> getLayout() {
-        return layout;
-    }
-
-    /**
-     * @param layout the layout to set
-     */
-    public void setLayout(List<ItemLayout> layout) {
-        this.layout = layout;
+    public void setType(String type) {
+        this.type = type;
     }
 }
