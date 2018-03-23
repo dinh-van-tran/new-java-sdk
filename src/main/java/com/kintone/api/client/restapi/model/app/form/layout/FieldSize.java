@@ -17,5 +17,56 @@
 package com.kintone.api.client.restapi.model.app.form.layout;
 
 public class FieldSize {
+    private String width;
+    private String height;
+    private String innerHeight;
 
+    public FieldSize() {
+
+    }
+
+    /**
+     * @return the width
+     */
+    public String getWidth() {
+        return width;
+    }
+
+    /**
+     * @param width
+     *            the width to set
+     */
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    /**
+     * @return the height
+     */
+    public String getHeight() {
+        return height;
+    }
+
+    /**
+     * @param height
+     *            the height to set
+     */
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    /**
+     * @return the innerHeight
+     */
+    public String getInnerHeight() {
+        return innerHeight;
+    }
+
+    /**
+     * @param innerHeight
+     *            the innerHeight to set
+     */
+    public void setInnerHeight(String innerHeight) {
+        this.innerHeight = innerHeight;
+    }
 }
