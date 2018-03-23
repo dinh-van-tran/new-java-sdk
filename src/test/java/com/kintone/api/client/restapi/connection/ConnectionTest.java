@@ -24,13 +24,10 @@ import org.junit.Test;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kintone.api.client.restapi.auth.Auth;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 
 public class ConnectionTest {
-    private static final JsonParser jsonParser = new JsonParser();
-
     @Test
     public void testGetRequestShouldSuccess() throws KintoneAPIException {
         Auth auth = new Auth();

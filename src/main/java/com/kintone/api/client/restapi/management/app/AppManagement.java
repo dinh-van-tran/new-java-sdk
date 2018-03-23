@@ -18,7 +18,10 @@ package com.kintone.api.client.restapi.management.app;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -41,6 +44,55 @@ public class AppManagement {
     public App getApp(int appId) throws KintoneAPIException {
         JsonElement response = connection.request("GET", "app.json?id=" + appId, null);
         return parseApp(response);
+    }
+
+    public List<App> getApps(Integer limit, Integer offset) throws KintoneAPIException {
+        if (limit == null) {
+            limit = Integer.valueOf(100);
+        }
+
+        if (limit < 1 || limit > 100) {
+            throw new KintoneAPIException("Limit number must between 1 and 100");
+        }
+
+        if (offset == null) {
+            offset = Integer.valueOf(0);
+        }
+
+        if (offset < 0) {
+            throw new KintoneAPIException("Offset number must be between 0 and 2147483647");
+        }
+
+        StringBuilder apiRequest = new StringBuilder();
+        apiRequest.append("apps.json");
+        apiRequest.append("?limit=").append(limit);
+        apiRequest.append("&offset=").append(offset);
+
+        JsonElement response = connection.request("GET", apiRequest.toString(), null);
+        return parseApps(response);
+    }
+
+    public List<App> getAppsByIDs(List<Integer> ids, Integer limit, Integer offset) throws KintoneAPIException {
+        // TODO implement
+        if (ids == null || ids.isEmpty()) {
+            return getApps(limit, offset);
+        }
+        return null;
+    }
+
+    public List<App> getAppsByCodes(List<String> codes, Integer limit, Integer offset) {
+        // TODO implement
+        return null;
+    }
+
+    public List<App> getAppsByName(String name, Integer limit, Integer offset) {
+        // TODO implement
+        return null;
+    }
+
+    public List<App> getAppsBySpaceIDs(List<Integer> spaceIds, Integer limit, Integer offset) {
+        // TODO implement
+        return null;
     }
 
     private App parseApp(JsonElement input) throws KintoneAPIException {
@@ -79,5 +131,25 @@ public class AppManagement {
         }
 
         return app;
+    }
+
+    private List<App> parseApps(JsonElement input) throws KintoneAPIException {
+        List<App> result = new ArrayList<App>();
+
+        if (!input.isJsonObject()) {
+            throw new KintoneAPIException("Parse error");
+        }
+
+        JsonElement apps = input.getAsJsonObject().get("apps");
+        if (!apps.isJsonArray()) {
+            throw new KintoneAPIException("Parse error");
+        }
+
+        Iterator<JsonElement> iterator = apps.getAsJsonArray().iterator();
+        while (iterator.hasNext()) {
+            result.add(parseApp(iterator.next()));
+        }
+
+        return result;
     }
 }

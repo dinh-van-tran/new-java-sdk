@@ -39,7 +39,7 @@ public class App {
     /**
      * @return the appId
      */
-    public int getAppId() {
+    public Integer getAppId() {
         return appId;
     }
 
