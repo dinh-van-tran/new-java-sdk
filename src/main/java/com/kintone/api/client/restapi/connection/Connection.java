@@ -155,7 +155,7 @@ public class Connection {
 
         sb.append(this.domain).append("/k/v1/").append(apiName);
 
-        return new URL(sb.toString());
+        return new URL(sb.toString().replaceAll("\\s", "%20"));
     }
 
     private void setHTTPHeaders(HttpURLConnection connection) {

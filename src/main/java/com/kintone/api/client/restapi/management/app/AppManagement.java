@@ -31,7 +31,6 @@ import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
 import com.kintone.api.client.restapi.model.member.UserBase;
 
-// TODO: Divide by component. Setting, Form, Fields, View, Process, Permission, Customization, Deploy/Get/Add
 public class AppManagement {
     private static final Gson gson = new Gson();
     private static final SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -46,7 +45,7 @@ public class AppManagement {
         return parseApp(response);
     }
 
-    public List<App> getApps(Integer limit, Integer offset) throws KintoneAPIException {
+    private List<App> getApps(List<Integer> ids, List<String> codes, String name, List<Integer> spaceIds, Integer limit, Integer offset) throws KintoneAPIException {
         if (limit == null) {
             limit = Integer.valueOf(100);
         }
@@ -67,32 +66,50 @@ public class AppManagement {
         apiRequest.append("apps.json");
         apiRequest.append("?limit=").append(limit);
         apiRequest.append("&offset=").append(offset);
+        if (ids != null) {
+            for (Integer appId : ids) {
+                apiRequest.append("&ids=").append(appId);
+            }
+        }
+
+        if (codes != null) {
+            for (String code : codes) {
+                apiRequest.append("&codes=").append(code);
+            }
+        }
+
+        if (name != null) {
+            apiRequest.append("&name=").append(name);
+        }
+
+        if (spaceIds != null) {
+            for (Integer spaceId : spaceIds) {
+                apiRequest.append("&spaceIds=").append(spaceId);
+            }
+        }
 
         JsonElement response = connection.request("GET", apiRequest.toString(), null);
         return parseApps(response);
     }
 
+    public List<App> getApps(Integer limit, Integer offset) throws KintoneAPIException {
+        return getApps(null, null, null, null, limit, offset);
+    }
+
     public List<App> getAppsByIDs(List<Integer> ids, Integer limit, Integer offset) throws KintoneAPIException {
-        // TODO implement
-        if (ids == null || ids.isEmpty()) {
-            return getApps(limit, offset);
-        }
-        return null;
+        return getApps(ids, null, null, null, limit, offset);
     }
 
-    public List<App> getAppsByCodes(List<String> codes, Integer limit, Integer offset) {
-        // TODO implement
-        return null;
+    public List<App> getAppsByCodes(List<String> codes, Integer limit, Integer offset) throws KintoneAPIException {
+        return getApps(null, codes, null, null, limit, offset);
     }
 
-    public List<App> getAppsByName(String name, Integer limit, Integer offset) {
-        // TODO implement
-        return null;
+    public List<App> getAppsByName(String name, Integer limit, Integer offset) throws KintoneAPIException {
+        return getApps(null, null, name, null, limit, offset);
     }
 
-    public List<App> getAppsBySpaceIDs(List<Integer> spaceIds, Integer limit, Integer offset) {
-        // TODO implement
-        return null;
+    public List<App> getAppsBySpaceIDs(List<Integer> spaceIds, Integer limit, Integer offset) throws KintoneAPIException {
+        return getApps(null, null, null, spaceIds, limit, offset);
     }
 
     private App parseApp(JsonElement input) throws KintoneAPIException {
@@ -134,8 +151,6 @@ public class AppManagement {
     }
 
     private List<App> parseApps(JsonElement input) throws KintoneAPIException {
-        List<App> result = new ArrayList<App>();
-
         if (!input.isJsonObject()) {
             throw new KintoneAPIException("Parse error");
         }
@@ -144,6 +159,8 @@ public class AppManagement {
         if (!apps.isJsonArray()) {
             throw new KintoneAPIException("Parse error");
         }
+
+        List<App> result = new ArrayList<App>();
 
         Iterator<JsonElement> iterator = apps.getAsJsonArray().iterator();
         while (iterator.hasNext()) {
