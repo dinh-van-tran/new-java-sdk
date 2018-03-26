@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -34,8 +35,12 @@ import com.kintone.api.client.restapi.model.member.UserBase;
 
 public class AppManagementParser {
     private static final Gson gson = new Gson();
-    private static final SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private static final SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private static final FormLayoutParser formLayoutParser = new FormLayoutParser();
+
+    static {
+        isoDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
     public App parseApp(JsonElement input) throws KintoneAPIException {
         if (!input.isJsonObject()) {
@@ -50,10 +55,10 @@ public class AppManagementParser {
         app.setDescription(jsonObject.get("description").getAsString());
 
         try {
-            Date createdDate = dateParser.parse(jsonObject.get("createdAt").getAsString());
+            Date createdDate = isoDateFormat.parse(jsonObject.get("createdAt").getAsString());
             app.setCreatedAt(createdDate);
 
-            Date modifiedDate = dateParser.parse(jsonObject.get("modifiedAt").getAsString());
+            Date modifiedDate = isoDateFormat.parse(jsonObject.get("modifiedAt").getAsString());
             app.setModifiedAt(modifiedDate);
         } catch (ParseException e) {
             throw new KintoneAPIException("Parse date error");

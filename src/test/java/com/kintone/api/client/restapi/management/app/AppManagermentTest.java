@@ -20,9 +20,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,6 +41,7 @@ import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
 import com.kintone.api.client.restapi.model.app.form.layout.FormLayout;
 import com.kintone.api.client.restapi.model.app.form.layout.ItemLayout;
+import com.kintone.api.client.restapi.model.member.UserBase;
 
 public class AppManagermentTest {
     private AppManagement appManagerment;
@@ -125,6 +129,45 @@ public class AppManagermentTest {
     public void testGetAppsShouldSuccess() throws KintoneAPIException {
         List<App> apps = this.appManagerment.getApps(null, null);
         assertTrue(!apps.isEmpty());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetAppShouldFailWhenRetrieveAppInGuestSpace() throws KintoneAPIException {
+        this.appManagerment.getApp(148);
+    }
+
+    @Test
+    public void testGetAppInGuestSpaceShouldSuccess() throws KintoneAPIException, ParseException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
+        connection.setProxy("10.224.136.41", 3128);
+
+        this.appManagerment = new AppManagement(connection);
+        App app = this.appManagerment.getApp(148);
+
+        assertNotNull(app);
+        assertEquals(Integer.valueOf(148), app.getAppId());
+        assertEquals(Integer.valueOf(2), app.getSpaceId());
+        assertEquals(Integer.valueOf(2), app.getThreadId());
+        assertEquals("guestApp", app.getCode());
+        assertEquals("Guest Space Test", app.getName());
+        assertEquals("", app.getDescription());
+
+        SimpleDateFormat isoDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        isoDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        assertEquals(isoDateFormat.parse("2018-03-26T06:06:52.000Z"), app.getCreatedAt());
+        assertEquals(isoDateFormat.parse("2018-03-26T07:40:47.000Z"), app.getModifiedAt());
+
+        UserBase creator = app.getCreator();
+        assertNotNull(creator);
+        assertEquals("dinh", creator.getCode());
+        assertEquals("dinhvt", creator.getName());
+
+        UserBase modifier = app.getModifier();
+        assertNotNull(modifier);
+        assertEquals("dinh", modifier.getCode());
+        assertEquals("dinhvt", modifier.getName());
     }
 
     @Test
