@@ -27,7 +27,6 @@ import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
 import com.kintone.api.client.restapi.model.app.form.field.FormField;
