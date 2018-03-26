@@ -141,7 +141,7 @@ public class Connection {
 
     private URL getURL(String apiName) throws MalformedURLException {
         if (this.domain == null || this.domain.isEmpty()) {
-            throw new NullPointerException("api is empty");
+            throw new NullPointerException("domain is empty");
         }
 
         if (apiName == null || apiName.isEmpty()) {
@@ -152,8 +152,12 @@ public class Connection {
         if (!this.domain.contains("https://")) {
             sb.append("https://");
         }
+        sb.append(this.domain).append("/k");
 
-        sb.append(this.domain).append("/k/v1/").append(apiName);
+        if (this.guestSpaceId >= 0) {
+            sb.append("/guest/").append(this.guestSpaceId);
+        }
+        sb.append("/v1/").append(apiName);
 
         return new URL(sb.toString().replaceAll("\\s", "%20"));
     }

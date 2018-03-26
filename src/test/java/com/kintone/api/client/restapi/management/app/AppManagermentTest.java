@@ -278,7 +278,7 @@ public class AppManagermentTest {
     @Test
     public void testGetAppsWithSpaceIdShouldReturnEmptyArrayWhenGivenNonExistSpaceId() throws KintoneAPIException {
         List<Integer> spaceIds = new ArrayList<Integer>();
-        spaceIds.add(2);
+        spaceIds.add(10);
         List<App> apps = this.appManagerment.getAppsBySpaceIDs(spaceIds, null, null);
         assertTrue(apps.isEmpty());
     }
@@ -328,12 +328,12 @@ public class AppManagermentTest {
     }
 
     @Test
-    public void testGetFormFieldsShouldSuccessWhenRetrivePrivewApp() throws KintoneAPIException {
-        FormFields formfields = this.appManagerment.getFormFields(145, null, true);
+    public void testGetFormFieldsShouldSuccessWhenRetrivePriviewApp() throws KintoneAPIException {
+        FormFields formfields = this.appManagerment.getFormFields(150, null, true);
         assertNotNull(formfields);
         Map<String, FormField> properties = formfields.getProperties();
         assertNotNull(properties);
-        assertEquals(14, properties.size());
+        assertEquals(11, properties.size());
     }
 
     @Test
@@ -413,13 +413,13 @@ public class AppManagermentTest {
 
     @Test
     public void testGetFormLayoutShouldSuccessWhenRetrievePreviewApp() throws KintoneAPIException {
-        FormLayout formLayout = this.appManagerment.getFormLayout(145, true);
+        FormLayout formLayout = this.appManagerment.getFormLayout(150, true);
 
         assertNotNull(formLayout);
 
         List<ItemLayout> layout = formLayout.getLayout();
         assertNotNull(layout);
-        assertEquals(6, layout.size());
+        assertEquals(4, layout.size());
     }
 
     @Test(expected=KintoneAPIException.class)

@@ -257,4 +257,101 @@ public class ConnectionTest {
             fail();
         }
     }
+
+    @Test
+    public void testGetRequestInGuestSpaceShouldSuccessWithPasswordAuthentication() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
+        connection.setProxy("10.224.136.41", 3128);
+
+        JsonElement result = connection.request("GET", "app.json?id=149", "");
+        assertNotNull(result);
+    }
+
+    @Test(expected = KintoneAPIException.class)
+    public void testGetRequestInGuestSpaceShouldFailWhenGivenInvalidSpaceId() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 1);
+        connection.setProxy("10.224.136.41", 3128);
+
+        connection.request("GET", "app.json?id=149", "");
+    }
+
+    @Test
+    public void testPostRequestInGuestSpaceShouldSuccess() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
+        connection.setProxy("10.224.136.41", 3128);
+
+        JsonObject body = new JsonObject();
+        body.addProperty("app", 148);
+
+        JsonObject textField = new JsonObject();
+        textField.addProperty("value", "test");
+
+        body.add("text", textField);
+
+        JsonElement result = connection.request("POST", "record.json", body.toString());
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testPutRequestInGuestSpaceShouldSuccess() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
+        connection.setProxy("10.224.136.41", 3128);
+
+        JsonObject body = new JsonObject();
+        body.addProperty("app", 148);
+        body.addProperty("id", 1);
+
+        JsonObject textField = new JsonObject();
+        textField.addProperty("value", "test put");
+
+        body.add("text", textField);
+
+        JsonElement result = connection.request("PUT", "record.json", body.toString());
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testDeleteRequestInGuestSpaceShouldSuccess() throws KintoneAPIException {
+        Auth auth = new Auth();
+        int appId = 148;
+
+        auth.setPasswordAuth("dinh", "Dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
+        connection.setProxy("10.224.136.41", 3128);
+
+        JsonObject postBody = new JsonObject();
+        postBody.addProperty("app", appId);
+
+        JsonObject textField = new JsonObject();
+        textField.addProperty("value", "test");
+
+        postBody.add("text", textField);
+
+        JsonElement postResult = connection.request("POST", "record.json", postBody.toString());
+        assertNotNull(postResult);
+
+        if(postResult.isJsonObject()) {
+            String id = postResult.getAsJsonObject().get("id").getAsString();
+
+            JsonObject deleteBody = new JsonObject();
+            deleteBody.addProperty("app", appId);
+
+            JsonArray ids = new JsonArray();
+            ids.add(id);
+
+            deleteBody.add("ids", ids);
+            JsonElement deleleResult = connection.request("DELETE", "records.json", deleteBody.toString());
+            assertNotNull(deleleResult);
+        } else {
+            fail();
+        }
+    }
 }
