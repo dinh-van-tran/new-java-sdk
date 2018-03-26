@@ -215,18 +215,23 @@ public class AppManagermentTest {
     }
 
     @Test(expected=KintoneAPIException.class)
-    public void testGetFormFielsShouldFailWhenGivenNoAppId() throws KintoneAPIException {
-        this.appManagerment.getFormFields(null, null);
+    public void testGetFormFieldsShouldFailWhenGivenNoAppId() throws KintoneAPIException {
+        this.appManagerment.getFormFields(null, null, null);
     }
 
     @Test(expected=KintoneAPIException.class)
-    public void testGetFormFielsShouldFailWhenGivenNonExistAppId() throws KintoneAPIException {
-        this.appManagerment.getFormFields(1, null);
+    public void testGetFormFieldsShouldFailWhenGivenNonExistAppId() throws KintoneAPIException {
+        this.appManagerment.getFormFields(1, null, null);
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormFieldsShouldFailWhenRetrievePreviewApp() throws KintoneAPIException {
+        this.appManagerment.getFormFields(145, null, null);
     }
 
     @Test
-    public void testGetFormFielsShouldSuccess() throws KintoneAPIException {
-        FormFields formfields = this.appManagerment.getFormFields(142, null);
+    public void testGetFormFieldsShouldSuccess() throws KintoneAPIException {
+        FormFields formfields = this.appManagerment.getFormFields(142, null, null);
         assertNotNull(formfields);
         Map<String, FormField> properties = formfields.getProperties();
         assertNotNull(properties);
@@ -234,9 +239,18 @@ public class AppManagermentTest {
     }
 
     @Test
-    public void testGetFormFielsShouldReturnCorrectLanguageSetting() throws KintoneAPIException {
+    public void testGetFormFieldsShouldSuccessWhenRetrivePrivewApp() throws KintoneAPIException {
+        FormFields formfields = this.appManagerment.getFormFields(145, null, true);
+        assertNotNull(formfields);
+        Map<String, FormField> properties = formfields.getProperties();
+        assertNotNull(properties);
+        assertEquals(14, properties.size());
+    }
+
+    @Test
+    public void testGetFormFieldsShouldReturnCorrectLanguageSetting() throws KintoneAPIException {
         // test with English language setting
-        FormFields formfields = this.appManagerment.getFormFields(142, LanguageSetting.EN);
+        FormFields formfields = this.appManagerment.getFormFields(142, LanguageSetting.EN, null);
         assertNotNull(formfields);
         Map<String, FormField> properties = formfields.getProperties();
         assertNotNull(properties);
@@ -247,7 +261,7 @@ public class AppManagermentTest {
         assertEquals("Record No.", ((RecordNumberField)recordNumber).getLabel());
 
         // Test with Japanese language setting
-        formfields = this.appManagerment.getFormFields(142, LanguageSetting.JA);
+        formfields = this.appManagerment.getFormFields(142, LanguageSetting.JA, null);
         assertNotNull(formfields);
         properties = formfields.getProperties();
         assertNotNull(properties);
@@ -260,7 +274,7 @@ public class AppManagermentTest {
 
     @Test
     public void testGetFormLayoutShouldSuccess() throws KintoneAPIException {
-        FormLayout formLayout = this.appManagerment.getFormLayout(137);
+        FormLayout formLayout = this.appManagerment.getFormLayout(137, null);
 
         assertNotNull(formLayout);
 
@@ -271,16 +285,32 @@ public class AppManagermentTest {
 
     @Test(expected=KintoneAPIException.class)
     public void testGetFormLayoutShouldFailWhenGiveNoAppId() throws KintoneAPIException {
-        this.appManagerment.getFormLayout(null);
+        this.appManagerment.getFormLayout(null, null);
     }
 
     @Test(expected=KintoneAPIException.class)
     public void testGetFormLayoutShouldFailWhenGiveInvalidAppId() throws KintoneAPIException {
-        this.appManagerment.getFormLayout(-1);
+        this.appManagerment.getFormLayout(-1, null);
     }
 
     @Test(expected=KintoneAPIException.class)
     public void testGetFormLayoutShouldFailWhenGiveNonExistAppId() throws KintoneAPIException {
-        this.appManagerment.getFormLayout(1);
+        this.appManagerment.getFormLayout(1, null);
+    }
+
+    @Test
+    public void testGetFormLayoutShouldSuccessWhenRetrievePreviewApp() throws KintoneAPIException {
+        FormLayout formLayout = this.appManagerment.getFormLayout(145, true);
+
+        assertNotNull(formLayout);
+
+        List<ItemLayout> layout = formLayout.getLayout();
+        assertNotNull(layout);
+        assertEquals(6, layout.size());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenRetrievePreviewApp() throws KintoneAPIException {
+        this.appManagerment.getFormLayout(145, null);
     }
 }

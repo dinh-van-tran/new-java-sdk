@@ -181,7 +181,7 @@ public class AppManagement {
         return result;
     }
 
-    public FormFields getFormFields(Integer appId, LanguageSetting lang) throws KintoneAPIException {
+    public FormFields getFormFields(Integer appId, LanguageSetting lang, Boolean isPreview) throws KintoneAPIException {
         if (appId == null || appId < 0) {
             throw new KintoneAPIException("Invalid app id value:" + appId);
         }
@@ -191,6 +191,9 @@ public class AppManagement {
         }
 
         StringBuilder apiRequest = new StringBuilder();
+        if (isPreview != null && isPreview) {
+            apiRequest.append("/preview/");
+        }
         apiRequest.append("app/form/fields.json");
         apiRequest.append("?app=").append(appId);
         apiRequest.append("&lang=").append(lang);
@@ -204,12 +207,15 @@ public class AppManagement {
         return parser.parse(response);
     }
 
-    public FormLayout getFormLayout(Integer appId) throws KintoneAPIException {
+    public FormLayout getFormLayout(Integer appId, Boolean isPreview) throws KintoneAPIException {
         if (appId == null || appId < 0) {
             throw new KintoneAPIException("Invalid app id value: " + appId);
         }
 
         StringBuilder apiRequest = new StringBuilder();
+        if (isPreview != null && isPreview) {
+            apiRequest.append("/preview/");
+        }
         apiRequest.append("app/form/layout.json");
         apiRequest.append("?app=").append(appId);
 
