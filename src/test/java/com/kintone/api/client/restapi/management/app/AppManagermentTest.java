@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.kintone.api.client.restapi.auth.Auth;
@@ -68,12 +69,49 @@ public class AppManagermentTest {
         assertNotNull(app.getModifier());
     }
 
+    @Test(expected=KintoneAPIException.class)
+    public void testGetAppShouldFailWhenDoesNotHavePermissionViewApp() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getApp(139);
+    }
+
+    @Test
+    public void testGetAppShouldSucessWhenUsingAPITokenHasViewRecordsPermission() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setApiToken("11ZkR2UsPjONME2eQL7durBe48TURXR5eVWl1ecg");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        App app = appManagerment.getApp(146);
+        assertEquals(Integer.valueOf(146), app.getAppId());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetAppShouldFailWhenUsingAPITokenDoesNotHasViewRecordsPermission() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setApiToken("qLYnG60WqbNx8RR5lkzP6wMcTr5a0vSO3VNn3ili");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getApp(146);
+    }
+
     @Test
     public void testGetAppShouldSuccessWhenAppIsNotInSpaceOrThead() throws KintoneAPIException {
-        App app = this.appManagerment.getApp(140);
+        App app = this.appManagerment.getApp(146);
 
         assertNotNull(app);
-        assertEquals(Integer.valueOf(140), app.getAppId());
+        assertEquals(Integer.valueOf(146), app.getAppId());
         assertEquals(null, app.getSpaceId());
         assertEquals(null, app.getThreadId());
     }
@@ -87,6 +125,45 @@ public class AppManagermentTest {
     public void testGetAppsShouldSuccess() throws KintoneAPIException {
         List<App> apps = this.appManagerment.getApps(null, null);
         assertTrue(!apps.isEmpty());
+    }
+
+    @Test
+    public void testGetAppsShouldReturnEmptyListWhenAccountDoesNotHavePermissionViewApps() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        List<App> apps = appManagerment.getApps(100, null);
+        assertTrue(apps.isEmpty());
+    }
+
+    @Test(expected=KintoneAPIException.class)
+    public void testGetAppsShouldFailWhenUsingOnlyAPIToken() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setApiToken("11ZkR2UsPjONME2eQL7durBe48TURXR5eVWl1ecg");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getApps(null, null);
+    }
+
+    @Test
+    public void testGetAppsShouldReturnEmptyListWhenProvideAccountDoesNotHavePermissionViewAppsAndAPIToken() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        auth.setApiToken("11ZkR2UsPjONME2eQL7durBe48TURXR5eVWl1ecg");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        List<App> apps = appManagerment.getApps(100, null);
+        assertTrue(apps.isEmpty());
     }
 
     @Test(expected=KintoneAPIException.class)
@@ -122,10 +199,10 @@ public class AppManagermentTest {
     @Test
     public void testGetAppsWithIdsShouldSuccess() throws KintoneAPIException {
         List<Integer> appIds = new ArrayList<Integer>();
-        appIds.add(127);
-        appIds.add(129);
+        appIds.add(139);
+        appIds.add(145);
         List<App> apps = this.appManagerment.getAppsByIDs(appIds, null, null);
-        assertEquals(2, apps.size());
+        assertEquals(1, apps.size());
     }
 
     @Test
@@ -152,7 +229,7 @@ public class AppManagermentTest {
         codes.add("test1");
         codes.add("test2");
         List<App> apps = this.appManagerment.getAppsByCodes(codes, null, null);
-        assertEquals(2, apps.size());
+        assertEquals(1, apps.size());
     }
 
     @Test
@@ -195,7 +272,7 @@ public class AppManagermentTest {
         List<Integer> spaceIds = new ArrayList<Integer>();
         spaceIds.add(1);
         List<App> apps = this.appManagerment.getAppsBySpaceIDs(spaceIds, null, null);
-        assertEquals(9, apps.size());
+        assertEquals(1, apps.size());
     }
 
     @Test
@@ -238,6 +315,18 @@ public class AppManagermentTest {
         assertEquals(14, properties.size());
     }
 
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormFieldsShouldFailWhenDoesNotHavePermissionViewRecords() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getFormFields(139, null, false);
+    }
+
     @Test
     public void testGetFormFieldsShouldSuccessWhenRetrivePrivewApp() throws KintoneAPIException {
         FormFields formfields = this.appManagerment.getFormFields(145, null, true);
@@ -272,9 +361,21 @@ public class AppManagermentTest {
         assertEquals("レコード番号", ((RecordNumberField)recordNumber).getLabel());
     }
 
+    @Ignore @Test(expected=KintoneAPIException.class)
+    public void testGetFormFieldsShouldFailWhenRetrievePreviewAppButAccountDoesNotHaveAppManagePermission() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getFormFields(145, null, true);
+    }
+
     @Test
     public void testGetFormLayoutShouldSuccess() throws KintoneAPIException {
-        FormLayout formLayout = this.appManagerment.getFormLayout(137, null);
+        FormLayout formLayout = this.appManagerment.getFormLayout(139, null);
 
         assertNotNull(formLayout);
 
@@ -298,6 +399,18 @@ public class AppManagermentTest {
         this.appManagerment.getFormLayout(1, null);
     }
 
+    @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenDoesNotHavePermissionViewRecords() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        appManagerment.getFormLayout(139, false);
+    }
+
     @Test
     public void testGetFormLayoutShouldSuccessWhenRetrievePreviewApp() throws KintoneAPIException {
         FormLayout formLayout = this.appManagerment.getFormLayout(145, true);
@@ -312,5 +425,18 @@ public class AppManagermentTest {
     @Test(expected=KintoneAPIException.class)
     public void testGetFormLayoutShouldFailWhenRetrievePreviewApp() throws KintoneAPIException {
         this.appManagerment.getFormLayout(145, null);
+    }
+
+    @Ignore @Test(expected=KintoneAPIException.class)
+    public void testGetFormLayoutShouldFailWhenRetrievePreviewAppButAccountDoesNotHaveAppManagePermission() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+
+        AppManagement appManagerment = new AppManagement(connection);
+
+        FormLayout formLayout = appManagerment.getFormLayout(145, true);
+        assertNotNull(formLayout);
     }
 }

@@ -106,6 +106,17 @@ public class ConnectionTest {
         assertNotNull(result);
     }
 
+    @Test(expected = KintoneAPIException.class)
+    public void testGetRequestWithInvalidPassAuthenticationShouldFailWhenTokenAuthenticationAllow() throws KintoneAPIException {
+        Auth auth = new Auth();
+        auth.setApiToken("11ZkR2UsPjONME2eQL7durBe48TURXR5eVWl1ecg");
+        auth.setPasswordAuth("dinh-tran", "dinh1990");
+        Connection connection = new Connection("https://ox806.kintone.com", auth);
+        connection.setProxy("10.224.136.41", 3128);
+        JsonElement result = connection.request("GET", "app.json?id=146", "");
+        assertNotNull(result);
+    }
+
     @Test
     public void testGetRequestWithBasicAuthenticationShouldSuccess() throws KintoneAPIException {
         Auth auth = new Auth();
@@ -146,7 +157,7 @@ public class ConnectionTest {
         connection.setProxy("10.224.136.41", 3128);
 
         JsonObject body = new JsonObject();
-        body.addProperty("app", 140);
+        body.addProperty("app", 147);
 
         JsonObject textField = new JsonObject();
         textField.addProperty("value", "test");
@@ -176,7 +187,7 @@ public class ConnectionTest {
         connection.setProxy("10.224.136.41", 3128);
 
         JsonObject body = new JsonObject();
-        body.addProperty("app", 140);
+        body.addProperty("app", 147);
         body.addProperty("id", 1);
 
         JsonObject textField = new JsonObject();
@@ -213,7 +224,7 @@ public class ConnectionTest {
     @Test
     public void testDeleteRequestShouldSuccess() throws KintoneAPIException {
         Auth auth = new Auth();
-        int appId = 140;
+        int appId = 147;
 
         auth.setPasswordAuth("dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);

@@ -82,9 +82,10 @@ public class Auth {
 
         if (this.passwordAuth != null) {
             String passwordAuthString = this.passwordAuth.getUsername() + ":" + this.passwordAuth.getPassword();
-//            System.out.println(Base64.getEncoder().encodeToString(passwordAuthString.getBytes()));
             headers.add(new HTTPHeader(AUTH_HEADER, Base64.getEncoder().encodeToString(passwordAuthString.getBytes())));
-        } else if (this.apiToken != null) {
+        }
+
+        if (this.apiToken != null) {
             headers.add(new HTTPHeader(API_TOKEN, this.apiToken));
         }
 
