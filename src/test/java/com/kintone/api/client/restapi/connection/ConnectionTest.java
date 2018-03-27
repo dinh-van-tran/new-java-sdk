@@ -24,7 +24,7 @@ import org.junit.Test;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.kintone.api.client.restapi.auth.Auth;
+import com.kintone.api.client.restapi.authentication.Auth;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 
 public class ConnectionTest {
@@ -34,7 +34,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "apis.json", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=151");
         assertNotNull(result);
     }
 
@@ -44,7 +44,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.comm", auth);
         connection.setProxy("10.224.136.41", 3128);
-        connection.request("GET", "apis.json", "");
+        connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=151");
     }
 
     @Test(expected = KintoneAPIException.class)
@@ -53,16 +53,16 @@ public class ConnectionTest {
         auth.setPasswordAuth("Dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        connection.request("GET", "app.json", "");
+        connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
     }
 
     @Test(expected = KintoneAPIException.class)
     public void testGetRequestShouldFailWhenGivenWrongPassword() throws KintoneAPIException {
         Auth auth = new Auth();
-        auth.setPasswordAuth("dinh", "Dinh1990");
+        auth.setPasswordAuth("dinh", "dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        connection.request("GET", "app.json", "");
+        connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=139", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -81,7 +81,7 @@ public class ConnectionTest {
         auth.setApiToken("Wbxsfd95bDKEjSf9wTtKu7VzcctVhkT0TfKJoIFm");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=139", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -91,7 +91,7 @@ public class ConnectionTest {
         auth.setApiToken("UZVlLDkvO20252Lbzx1qbzI9V4dtiAMuMNBxnuDU");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=139", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -102,7 +102,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("dinh", "Dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=139", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST,  ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -113,7 +113,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("dinh-tran", "dinh1990");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=146", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -124,7 +124,7 @@ public class ConnectionTest {
         auth.setBasicAuth("qasi", "qasi");
         Connection connection = new Connection("https://qasi-f14-basic.cybozu-dev.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=4", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=4");
         assertNotNull(result);
     }
 
@@ -134,7 +134,7 @@ public class ConnectionTest {
         auth.setPasswordAuth("cybozu", "cybozu");
         Connection connection = new Connection("https://qasi-f14-basic.cybozu-dev.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=4", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=4");
         assertNotNull(result);
     }
 
@@ -145,7 +145,7 @@ public class ConnectionTest {
         auth.setBasicAuth("qasi", "qasi");
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
-        JsonElement result = connection.request("GET", "app.json?id=139", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=139");
         assertNotNull(result);
     }
 
@@ -164,7 +164,7 @@ public class ConnectionTest {
 
         body.add("text", textField);
 
-        JsonElement result = connection.request("POST", "record.json", body.toString());
+        JsonElement result = connection.request(ConnectionConstants.POST_REQUEST, ConnectionConstants.RECORD, body.toString());
         assertNotNull(result);
     }
 
@@ -175,7 +175,7 @@ public class ConnectionTest {
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
 
-        JsonElement result = connection.request("POST", "record.json", "");
+        JsonElement result = connection.request(ConnectionConstants.POST_REQUEST, ConnectionConstants.RECORD, "");
         assertNotNull(result);
     }
 
@@ -195,7 +195,7 @@ public class ConnectionTest {
 
         body.add("text", textField);
 
-        JsonElement result = connection.request("PUT", "record.json", body.toString());
+        JsonElement result = connection.request(ConnectionConstants.PUT_REQUEST, ConnectionConstants.RECORD, body.toString());
         assertNotNull(result);
     }
 
@@ -206,7 +206,7 @@ public class ConnectionTest {
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
 
-        JsonElement result = connection.request("PUT", "record.json", "");
+        JsonElement result = connection.request(ConnectionConstants.PUT_REQUEST, ConnectionConstants.RECORD, "");
         assertNotNull(result);
     }
 
@@ -217,7 +217,7 @@ public class ConnectionTest {
         Connection connection = new Connection("https://ox806.kintone.com", auth);
         connection.setProxy("10.224.136.41", 3128);
 
-        JsonElement result = connection.request("PUT", "record.json", "");
+        JsonElement result = connection.request(ConnectionConstants.PUT_REQUEST, ConnectionConstants.RECORD, "");
         assertNotNull(result);
     }
 
@@ -238,7 +238,7 @@ public class ConnectionTest {
 
         postBody.add("text", textField);
 
-        JsonElement postResult = connection.request("POST", "record.json", postBody.toString());
+        JsonElement postResult = connection.request(ConnectionConstants.POST_REQUEST, ConnectionConstants.RECORD, postBody.toString());
         assertNotNull(postResult);
 
         if(postResult.isJsonObject()) {
@@ -251,7 +251,7 @@ public class ConnectionTest {
             ids.add(id);
 
             deleteBody.add("ids", ids);
-            JsonElement deleleResult = connection.request("DELETE", "records.json", deleteBody.toString());
+            JsonElement deleleResult = connection.request(ConnectionConstants.DELETE_REQUEST, ConnectionConstants.RECORDS, deleteBody.toString());
             assertNotNull(deleleResult);
         } else {
             fail();
@@ -265,7 +265,7 @@ public class ConnectionTest {
         Connection connection = new Connection("https://ox806.kintone.com", auth, 2);
         connection.setProxy("10.224.136.41", 3128);
 
-        JsonElement result = connection.request("GET", "app.json?id=149", "");
+        JsonElement result = connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=149");
         assertNotNull(result);
     }
 
@@ -276,7 +276,7 @@ public class ConnectionTest {
         Connection connection = new Connection("https://ox806.kintone.com", auth, 1);
         connection.setProxy("10.224.136.41", 3128);
 
-        connection.request("GET", "app.json?id=149", "");
+        connection.request(ConnectionConstants.GET_REQUEST, ConnectionConstants.APP, "?id=149");
     }
 
     @Test
@@ -294,7 +294,7 @@ public class ConnectionTest {
 
         body.add("text", textField);
 
-        JsonElement result = connection.request("POST", "record.json", body.toString());
+        JsonElement result = connection.request(ConnectionConstants.POST_REQUEST, ConnectionConstants.RECORD, body.toString());
         assertNotNull(result);
     }
 
@@ -314,7 +314,7 @@ public class ConnectionTest {
 
         body.add("text", textField);
 
-        JsonElement result = connection.request("PUT", "record.json", body.toString());
+        JsonElement result = connection.request(ConnectionConstants.PUT_REQUEST, ConnectionConstants.RECORD, body.toString());
         assertNotNull(result);
     }
 
@@ -335,7 +335,7 @@ public class ConnectionTest {
 
         postBody.add("text", textField);
 
-        JsonElement postResult = connection.request("POST", "record.json", postBody.toString());
+        JsonElement postResult = connection.request(ConnectionConstants.POST_REQUEST, ConnectionConstants.RECORD, postBody.toString());
         assertNotNull(postResult);
 
         if(postResult.isJsonObject()) {
@@ -348,7 +348,7 @@ public class ConnectionTest {
             ids.add(id);
 
             deleteBody.add("ids", ids);
-            JsonElement deleleResult = connection.request("DELETE", "records.json", deleteBody.toString());
+            JsonElement deleleResult = connection.request(ConnectionConstants.DELETE_REQUEST, ConnectionConstants.RECORDS, deleteBody.toString());
             assertNotNull(deleleResult);
         } else {
             fail();

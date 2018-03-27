@@ -37,19 +37,17 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.kintone.api.client.restapi.auth.Auth;
-import com.kintone.api.client.restapi.auth.HTTPHeader;
+import com.kintone.api.client.restapi.authentication.Auth;
 import com.kintone.api.client.restapi.exception.ErrorResponse;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
+import com.kintone.api.client.restapi.model.http.HTTPHeader;
 
 public class Connection {
     private static final String JSON_CONTENT = "application/json";
     private static final JsonParser jsonParser = new JsonParser();
     private static final Gson gson = new Gson();
 
-    private final String USER_AGENT_KEY = "User-Agent";
-    private final String USER_AGENT_VALUE = "kintone-java-SDK";
-    private String userAgent = USER_AGENT_VALUE;
+    private String userAgent = ConnectionConstants.USER_AGENT_VALUE;
     private Auth auth;
     private String domain;
     private int guestSpaceId;
@@ -71,9 +69,16 @@ public class Connection {
         HttpsURLConnection connection = null;
         String response = null;
 
+        boolean post = false;
+        if (ConnectionConstants.PUT_REQUEST.equals(method)
+                || ConnectionConstants.POST_REQUEST.equals(method)
+                || ConnectionConstants.DELETE_REQUEST.equals(method)) {
+            post = true;
+        }
+
         URL url = null;
         try {
-            url = this.getURL(apiName);
+            url = this.getURL(apiName, post ? null : body);
         } catch (MalformedURLException e) {
             throw new KintoneAPIException("Invalid URL");
         }
@@ -91,20 +96,15 @@ public class Connection {
             throw new KintoneAPIException("can not open connection"); // TODO change to KintoneAPIException
         }
 
-        boolean post = false;
-        if ("PUT".equals(method) || "POST".equals(method) || "DELETE".equals(method)) {
-            post = true;
-        }
-
         if (post) {
             connection.setDoOutput(true);
-            connection.setRequestProperty("Content-Type", JSON_CONTENT); // TODO implement JSON_CONTENT
+            connection.setRequestProperty(ConnectionConstants.CONTENT_TYPE_HEADER, JSON_CONTENT);
         }
 
         try {
             connection.connect();
         } catch (IOException e) {
-            throw new KintoneAPIException(" cannot connect to host"); // TODO change to KintoneAPIException
+            throw new KintoneAPIException(" cannot connect to host");
         }
 
         if (post) {
@@ -116,7 +116,7 @@ public class Connection {
                 throw new KintoneAPIException("an error occurred while sending data");
             }
             try {
-                OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8");
+                OutputStreamWriter writer = new OutputStreamWriter(os, StandardCharsets.UTF_8);
                 writer.write(body);
                 writer.close();
             } catch(IOException e) {
@@ -133,13 +133,13 @@ public class Connection {
                 is.close();
             }
         } catch (IOException e) {
-            throw new KintoneAPIException("an error occurred while receiving data"); // TODO change to KintoneAPIException
+            throw new KintoneAPIException("an error occurred while receiving data");
         }
 
         return jsonParser.parse(response);
     }
 
-    private URL getURL(String apiName) throws MalformedURLException {
+    private URL getURL(String apiName, String parameters) throws MalformedURLException {
         if (this.domain == null || this.domain.isEmpty()) {
             throw new NullPointerException("domain is empty");
         }
@@ -149,15 +149,21 @@ public class Connection {
         }
 
         StringBuilder sb = new StringBuilder();
-        if (!this.domain.contains("https://")) {
-            sb.append("https://");
+        if (!this.domain.contains(ConnectionConstants.HTTPS_PREFIX)) {
+            sb.append(ConnectionConstants.HTTPS_PREFIX);
         }
-        sb.append(this.domain).append("/k");
+        sb.append(this.domain);
 
+        String urlString = ConnectionConstants.BASE_URL;
         if (this.guestSpaceId >= 0) {
-            sb.append("/guest/").append(this.guestSpaceId);
+            urlString = ConnectionConstants.BASE_GUEST_URL.replaceAll("\\{GUEST_SPACE_ID\\}", this.guestSpaceId + "");
         }
-        sb.append("/v1/").append(apiName);
+        urlString = urlString.replaceAll("\\{API_NAME\\}", apiName);
+
+        sb.append(urlString);
+        if (parameters != null) {
+            sb.append(parameters);
+        }
 
         return new URL(sb.toString().replaceAll("\\s", "%20"));
     }
@@ -167,14 +173,20 @@ public class Connection {
             connection.setRequestProperty(header.getKey(), header.getValue());
         }
 
-        connection.setRequestProperty(USER_AGENT_KEY, this.userAgent);
+        connection.setRequestProperty(ConnectionConstants.USER_AGENT_KEY, this.userAgent);
         for (HTTPHeader header : this.headers) {
             connection.setRequestProperty(header.getKey(), header.getValue());
         }
     }
 
-    public void setAuth(Auth auth) {
+    public Connection setHeader(String key, String value) {
+        this.headers.add(new HTTPHeader(key, key));
+        return this;
+    }
+
+    public Connection setAuth(Auth auth) {
         this.auth = auth;
+        return this;
     }
 
     private String readStream(InputStream is) {
@@ -321,7 +333,6 @@ public class Connection {
      *            proxy port
      */
     public void setProxy(String host, int port) {
-        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host,
-                port));
+        this.proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
     }
 }
