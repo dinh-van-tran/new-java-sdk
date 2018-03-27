@@ -18,6 +18,7 @@ package com.kintone.api.client.restapi.management.app;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -34,13 +35,18 @@ import org.junit.Test;
 import com.kintone.api.client.restapi.auth.Auth;
 import com.kintone.api.client.restapi.connection.Connection;
 import com.kintone.api.client.restapi.constant.LanguageSetting;
+import com.kintone.api.client.restapi.constant.LayoutType;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
 import com.kintone.api.client.restapi.model.app.form.field.FormField;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
+import com.kintone.api.client.restapi.model.app.form.layout.FieldLayout;
 import com.kintone.api.client.restapi.model.app.form.layout.FormLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.GroupLayout;
 import com.kintone.api.client.restapi.model.app.form.layout.ItemLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.RowLayout;
+import com.kintone.api.client.restapi.model.app.form.layout.SubTableLayout;
 import com.kintone.api.client.restapi.model.member.UserBase;
 
 public class AppManagermentTest {
@@ -417,7 +423,7 @@ public class AppManagermentTest {
     }
 
     @Test
-    public void testGetFormLayoutShouldSuccess() throws KintoneAPIException {
+    public void testGetFormLayoutWithNormalLayoutShouldSuccess() throws KintoneAPIException {
         FormLayout formLayout = this.appManagerment.getFormLayout(139, null);
 
         assertNotNull(formLayout);
@@ -425,6 +431,139 @@ public class AppManagermentTest {
         List<ItemLayout> layout = formLayout.getLayout();
         assertNotNull(layout);
         assertEquals(9, layout.size());
+
+        assertTrue(layout.get(0) instanceof RowLayout);
+        RowLayout firstRow = (RowLayout)layout.get(0);
+        assertEquals(LayoutType.ROW, firstRow.getType());
+
+        List<FieldLayout> fields = firstRow.getFields();
+        assertEquals(3, fields.size());
+
+        FieldLayout firstItem = fields.get(0);
+        assertNotNull(firstItem);
+        assertEquals("LABEL", firstItem.getType());
+        assertEquals("Label", firstItem.getLabel());
+        assertNull(firstItem.getCode());
+        assertNotNull(firstItem.getSize());
+        assertEquals("65", firstItem.getSize().getWidth());
+        assertNull(firstItem.getSize().getHeight());
+
+        FieldLayout secondItem = fields.get(1);
+        assertNotNull(secondItem);
+        assertEquals("NUMBER", secondItem.getType());
+        assertNull(secondItem.getLabel());
+        assertEquals("Number", secondItem.getCode());
+        assertNotNull(secondItem.getSize());
+        assertEquals("193", secondItem.getSize().getWidth());
+        assertNull(secondItem.getSize().getHeight());
+
+        FieldLayout thirdItem = fields.get(2);
+        assertNotNull(thirdItem);
+        assertEquals("SINGLE_LINE_TEXT", thirdItem.getType());
+        assertNull(thirdItem.getLabel());
+        assertEquals("Text", thirdItem.getCode());
+        assertNotNull(thirdItem.getSize());
+        assertEquals("193", thirdItem.getSize().getWidth());
+        assertNull(thirdItem.getSize().getHeight());
+    }
+
+    @Test
+    public void testGetFormLayoutWithFieldGroupShouldSuccess() throws KintoneAPIException {
+        FormLayout formLayout = this.appManagerment.getFormLayout(139, null);
+
+        assertNotNull(formLayout);
+
+        List<ItemLayout> layout = formLayout.getLayout();
+        assertNotNull(layout);
+        assertEquals(9, layout.size());
+
+        assertTrue(layout.get(5) instanceof GroupLayout);
+        GroupLayout fieldGroup = (GroupLayout)layout.get(5);
+        assertEquals(LayoutType.GROUP, fieldGroup.getType());
+        List<RowLayout> fieldGroupLayout = fieldGroup.getLayout();
+        assertNotNull(fieldGroupLayout);
+        assertEquals(3, fieldGroupLayout.size());
+
+        RowLayout firstRow = fieldGroupLayout.get(0);
+        assertNotNull(firstRow);
+        assertEquals(LayoutType.ROW, firstRow.getType());
+
+        List<FieldLayout> fields = firstRow.getFields();
+        assertEquals(3, fields.size());
+
+        FieldLayout firstItem = fields.get(0);
+        assertNotNull(firstItem);
+        assertEquals("TIME", firstItem.getType());
+        assertEquals("Time_0", firstItem.getCode());
+        assertNull(firstItem.getLabel());
+        assertNotNull(firstItem.getSize());
+        assertEquals("101", firstItem.getSize().getWidth());
+        assertNull(firstItem.getSize().getHeight());
+
+        FieldLayout secondItem = fields.get(1);
+        assertNotNull(secondItem);
+        assertEquals("NUMBER", secondItem.getType());
+        assertNull(secondItem.getLabel());
+        assertEquals("Number_0", secondItem.getCode());
+        assertNotNull(secondItem.getSize());
+        assertEquals("193", secondItem.getSize().getWidth());
+        assertNull(secondItem.getSize().getHeight());
+
+        FieldLayout thirdItem = fields.get(2);
+        assertNotNull(thirdItem);
+        assertEquals("SINGLE_LINE_TEXT", thirdItem.getType());
+        assertNull(thirdItem.getLabel());
+        assertEquals("Text_0", thirdItem.getCode());
+        assertNotNull(thirdItem.getSize());
+        assertEquals("193", thirdItem.getSize().getWidth());
+        assertNull(thirdItem.getSize().getHeight());
+    }
+
+    @Test
+    public void testGetFormLayoutWithTableShouldSuccess() throws KintoneAPIException {
+        FormLayout formLayout = this.appManagerment.getFormLayout(152, null);
+
+        assertNotNull(formLayout);
+
+        List<ItemLayout> layout = formLayout.getLayout();
+        assertNotNull(layout);
+        assertEquals(4, layout.size());
+
+        assertTrue(layout.get(0) instanceof SubTableLayout);
+        SubTableLayout tableLayout = (SubTableLayout)layout.get(0);
+        assertEquals(LayoutType.SUBTABLE, tableLayout.getType());
+        assertEquals("Table", tableLayout.getCode());
+
+        List<FieldLayout> fields = tableLayout.getFields();
+        assertEquals(7, fields.size());
+
+        FieldLayout firstItem = fields.get(0);
+        assertNotNull(firstItem);
+        assertEquals("SINGLE_LINE_TEXT", firstItem.getType());
+        assertEquals("Text", firstItem.getCode());
+        assertNull(firstItem.getLabel());
+        assertNotNull(firstItem.getSize());
+        assertEquals("193", firstItem.getSize().getWidth());
+        assertNull(firstItem.getSize().getHeight());
+
+        FieldLayout secondItem = fields.get(1);
+        assertNotNull(secondItem);
+        assertEquals("RICH_TEXT", secondItem.getType());
+        assertNull(secondItem.getLabel());
+        assertEquals("Rich_text", secondItem.getCode());
+        assertNotNull(secondItem.getSize());
+        assertEquals("315", secondItem.getSize().getWidth());
+        assertNull(secondItem.getSize().getHeight());
+        assertEquals("125", secondItem.getSize().getInnerHeight());
+
+        FieldLayout thirdItem = fields.get(2);
+        assertNotNull(thirdItem);
+        assertEquals("TIME", thirdItem.getType());
+        assertNull(thirdItem.getLabel());
+        assertEquals("Time", thirdItem.getCode());
+        assertNotNull(thirdItem.getSize());
+        assertEquals("101", thirdItem.getSize().getWidth());
+        assertNull(thirdItem.getSize().getHeight());
     }
 
     @Test(expected=KintoneAPIException.class)

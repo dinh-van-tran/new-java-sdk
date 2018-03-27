@@ -111,6 +111,11 @@ public class FormLayoutParser {
         JsonObject root = input.getAsJsonObject();
         FieldLayout fieldLayout = new FieldLayout();
 
+        JsonElement type = root.get("type");
+        if (type != null && type.isJsonPrimitive()) {
+            fieldLayout.setType(type.getAsString());
+        }
+
         JsonElement code = root.get("code");
         if (code != null && code.isJsonPrimitive()) {
             fieldLayout.setCode(code.getAsString());
