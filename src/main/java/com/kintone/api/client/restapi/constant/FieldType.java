@@ -17,14 +17,14 @@
 package com.kintone.api.client.restapi.constant;
 
 public enum FieldType {
-    CALC,// TODO
+    CALC,
     GROUP,
     FILE,
     TIME,
     DATE,
     LINK,
     NUMBER,
-    SUBTABLE,// TODO
+    SUBTABLE,
     DATETIME,
     DROP_DOWN,
     MULTI_SELECT,
