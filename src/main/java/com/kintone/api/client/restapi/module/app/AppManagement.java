@@ -126,7 +126,10 @@ public class AppManagement {
         body.append("&lang=").append(lang);
 
         JsonElement response = connection.request(ConnectionConstants.GET_REQUEST, apiRequest.toString(), body.toString());
-        return parser.parseFormFields(response);
+        FormFields formfields = parser.parseFormFields(response);
+        formfields.setApp(appId);
+
+        return formfields;
     }
 
     public FormLayout getFormLayout(Integer appId, Boolean isPreview) throws KintoneAPIException {

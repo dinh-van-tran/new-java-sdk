@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.constant;
 
-public enum NumberFormat {
-    DATE,
-    TIME,
-    DATE_TIME,
-    NUMBER,
-    NUMBER_DIGIT,
-    HOUR_MINUTE,
-    DAY_HOUR_MINUTE
+public enum MemberSelectEntityType {
+    USER,
+    GROUP,
+    ORGANIZATION
 }

@@ -16,11 +16,22 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.Field;
 
-public class CreatedTimeField extends AbstractSystemInfoField {
-    public CreatedTimeField(String code) {
-        this.code = code;
-        this.type = FieldType.CREATED_TIME;
+public abstract class AbstractSystemField extends Field {
+    protected String label;
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * @param label the label to set
+     */
+    public void setLabel(String label) {
+        this.label = label;
     }
 }

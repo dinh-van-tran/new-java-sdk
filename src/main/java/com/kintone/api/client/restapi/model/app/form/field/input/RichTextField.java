@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class GroupSelectionField extends UserSelectionField {
-    public GroupSelectionField() {
-        this.type = FieldType.GROUP_SELECT;
+public class RichTextField extends AbstractInputField {
+    private String defaultValue;
+
+    public RichTextField(String code) {
+        this.code = code;
+        this.type = FieldType.RICH_TEXT;
     }
 
-    public GroupSelectionField(String code) {
-        this.code = code;
-        this.type = FieldType.GROUP_SELECT;
+    /**
+     * @return the defaultValue
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * @param defaultValue the defaultValue to set
+     */
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }

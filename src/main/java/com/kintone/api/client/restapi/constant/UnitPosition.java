@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.kintone.api.client.restapi.constant;
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
-
-public enum LinkProtocol {
-    WEB,
-    CALL,
-    MAIL
+public enum UnitPosition {
+    BEFORE,
+    AFTER
 }

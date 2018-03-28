@@ -16,11 +16,46 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.time;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class DateTimeField extends DateField {
+public class DateTimeField extends AbstractInputField {
+    protected Boolean unique;
+    protected String defaultValue;
+    protected Boolean defaultNowValue;
+
     public DateTimeField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.DATETIME;
+    }
+
+    /**
+     * @return the unique
+     */
+    public Boolean getUnique() {
+        return unique;
+    }
+
+    /**
+     * @param unique the unique to set
+     */
+    public void setUnique(Boolean unique) {
+        this.unique = unique;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public Boolean getDefaultNowValue() {
+        return defaultNowValue;
+    }
+
+    public void setDefaultNowValue(Boolean defaultNowValue) {
+        this.defaultNowValue = defaultNowValue;
     }
 }

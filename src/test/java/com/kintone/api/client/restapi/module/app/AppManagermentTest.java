@@ -38,7 +38,7 @@ import com.kintone.api.client.restapi.constant.LanguageSetting;
 import com.kintone.api.client.restapi.constant.LayoutType;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.App;
-import com.kintone.api.client.restapi.model.app.form.field.FormField;
+import com.kintone.api.client.restapi.model.app.form.field.Field;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
 import com.kintone.api.client.restapi.model.app.form.layout.FieldLayout;
@@ -360,7 +360,9 @@ public class AppManagermentTest {
     public void testGetFormFieldsShouldSuccess() throws KintoneAPIException {
         FormFields formfields = this.appManagerment.getFormFields(142, null, null);
         assertNotNull(formfields);
-        Map<String, FormField> properties = formfields.getProperties();
+        assertEquals(Integer.valueOf(142), formfields.getApp());
+        assertEquals(Integer.valueOf(5), formfields.getRevision());
+        Map<String, Field> properties = formfields.getProperties();
         assertNotNull(properties);
         assertEquals(14, properties.size());
     }
@@ -381,7 +383,7 @@ public class AppManagermentTest {
     public void testGetFormFieldsShouldSuccessWhenRetrivePriviewApp() throws KintoneAPIException {
         FormFields formfields = this.appManagerment.getFormFields(150, null, true);
         assertNotNull(formfields);
-        Map<String, FormField> properties = formfields.getProperties();
+        Map<String, Field> properties = formfields.getProperties();
         assertNotNull(properties);
         assertEquals(11, properties.size());
     }
@@ -391,11 +393,11 @@ public class AppManagermentTest {
         // test with English language setting
         FormFields formfields = this.appManagerment.getFormFields(142, LanguageSetting.EN, null);
         assertNotNull(formfields);
-        Map<String, FormField> properties = formfields.getProperties();
+        Map<String, Field> properties = formfields.getProperties();
         assertNotNull(properties);
         assertEquals(14, properties.size());
 
-        FormField recordNumber = properties.get("レコード番号");
+        Field recordNumber = properties.get("レコード番号");
         assertTrue(recordNumber instanceof RecordNumberField);
         assertEquals("Record No.", ((RecordNumberField)recordNumber).getLabel());
 

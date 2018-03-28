@@ -16,13 +16,16 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.time;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class DateField extends TimeField {
+public class DateField extends AbstractInputField {
     protected Boolean unique;
+    protected String defaultValue;
+    protected Boolean defaultNowValue;
 
     public DateField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.DATE;
     }
 
@@ -38,5 +41,21 @@ public class DateField extends TimeField {
      */
     public void setUnique(Boolean unique) {
         this.unique = unique;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public Boolean getDefaultNowValue() {
+        return defaultNowValue;
+    }
+
+    public void setDefaultNowValue(Boolean defaultNowValue) {
+        this.defaultNowValue = defaultNowValue;
     }
 }

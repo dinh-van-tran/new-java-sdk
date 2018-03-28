@@ -27,28 +27,28 @@ import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.kintone.api.client.restapi.constant.MemberSelectEntityType;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
-import com.kintone.api.client.restapi.model.app.form.field.FormField;
+import com.kintone.api.client.restapi.model.app.form.field.Field;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.Table;
-import com.kintone.api.client.restapi.model.app.form.field.input.Attachment;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AttachmentField;
+import com.kintone.api.client.restapi.model.app.form.field.input.LinkField;
+import com.kintone.api.client.restapi.model.app.form.field.input.MultiLineText;
+import com.kintone.api.client.restapi.model.app.form.field.input.NumberField;
+import com.kintone.api.client.restapi.model.app.form.field.input.RichTextField;
+import com.kintone.api.client.restapi.model.app.form.field.input.SingleLineTextField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 import com.kintone.api.client.restapi.model.app.form.field.input.lookup.LookupField;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.DepartmentSelectionField;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.MemberSelectEntity;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.GroupSelectionField;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.UserSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.CheckboxField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.DepartmentSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.DropDownField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.Entity;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.EntityType;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.GroupSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.MultipleSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.RadioButtonField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.UserSelectionField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.LinkField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.MultiLineText;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.NumberField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.RichTextField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.SingleLineTextField;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.DateField;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.DateTimeField;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.TimeField;
@@ -60,7 +60,7 @@ import com.kintone.api.client.restapi.model.app.form.field.system.CreatorField;
 import com.kintone.api.client.restapi.model.app.form.field.system.ModifierField;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
 import com.kintone.api.client.restapi.model.app.form.field.system.StatusField;
-import com.kintone.api.client.restapi.model.app.form.field.system.UpdatedTime;
+import com.kintone.api.client.restapi.model.app.form.field.system.UpdatedTimeField;
 
 public class FormFieldParser {
     private static final Gson gson = new Gson();
@@ -77,15 +77,15 @@ public class FormFieldParser {
         return formFields;
     }
 
-    private Map<String, FormField> parseProperties(JsonElement input) throws KintoneAPIException {
-        Map<String, FormField> result = new HashMap<String, FormField>();
+    private Map<String, Field> parseProperties(JsonElement input) throws KintoneAPIException {
+        Map<String, Field> result = new HashMap<String, Field>();
         if (!input.isJsonObject()) {
             return result;
         }
 
         Set<Map.Entry<String, JsonElement>> entries = input.getAsJsonObject().entrySet();
         for (Map.Entry<String, JsonElement> entry : entries) {
-            FormField formField = parseFormField(entry.getValue());
+            Field formField = parseFormField(entry.getValue());
             if (formField != null) {
                 result.put(formField.getCode(), formField);
             }
@@ -93,7 +93,7 @@ public class FormFieldParser {
         return result;
     }
 
-    private FormField parseFormField(JsonElement input) throws KintoneAPIException {
+    private Field parseFormField(JsonElement input) throws KintoneAPIException {
         if (!input.isJsonObject()) {
             return null;
         }
@@ -111,7 +111,7 @@ public class FormFieldParser {
             throw new KintoneAPIException("Missing type when parse form field");
         }
 
-        FormField formField = null;
+        Field formField = null;
         // Parse Lookup first to avoid confusing with NUMBER or TEXT type.
         if (data.getLookup() != null) {
             formField =  parseInputField(input);
@@ -159,7 +159,7 @@ public class FormFieldParser {
         return formField;
     }
 
-    private InputField parseInputField(JsonElement input) throws KintoneAPIException {
+    private AbstractInputField parseInputField(JsonElement input) throws KintoneAPIException {
         if (!input.isJsonObject()) {
             return null;
         }
@@ -177,7 +177,7 @@ public class FormFieldParser {
             throw new KintoneAPIException("Missing type when parse form field");
         }
 
-        InputField inputField = null;
+        AbstractInputField inputField = null;
 
         // Parse Lookup first to avoid confusing with NUMBER or TEXT type.
         if (data.getLookup() != null) {
@@ -241,7 +241,6 @@ public class FormFieldParser {
             inputField.setLabel(data.getLabel());
             inputField.setNoLabel(data.getNoLabel());
             inputField.setRequired(data.getRequired());
-            inputField.setUnique(data.getUnique());
         }
 
         return inputField;
@@ -264,7 +263,8 @@ public class FormFieldParser {
         number.setDigit(data.getDigit());
         number.setUnit(data.getUnit());
         number.setUnitPosition(data.getUnitPosition());
-  
+        number.setUnique(data.getUnique());
+
         return number;
     }
 
@@ -321,8 +321,8 @@ public class FormFieldParser {
         return updater;
     }
 
-    private UpdatedTime parseUpdatedDateTimeType(FormFieldParseData data) throws KintoneAPIException {
-        UpdatedTime updatedDateTime = new UpdatedTime(data.getCode());
+    private UpdatedTimeField parseUpdatedDateTimeType(FormFieldParseData data) throws KintoneAPIException {
+        UpdatedTimeField updatedDateTime = new UpdatedTimeField(data.getCode());
         updatedDateTime.setLabel(data.getLabel());
         updatedDateTime.setNoLabel(data.getNoLabel());
   
@@ -373,6 +373,7 @@ public class FormFieldParser {
         link.setProtocol(data.getProtocol());
         link.setMinLength(parseInteger(data.getMinLength()));
         link.setMaxLength(parseInteger(data.getMaxLength()));
+        link.setUnique(data.getUnique());
 
         if (data.getDefaultValue() == null ) {
             link.setDefaultValue(null);
@@ -400,7 +401,7 @@ public class FormFieldParser {
         return time;
     }
 
-    private TimeField parseDateFieldType(FormFieldParseData data) throws KintoneAPIException {
+    private DateField parseDateFieldType(FormFieldParseData data) throws KintoneAPIException {
         DateField date = new DateField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -411,11 +412,12 @@ public class FormFieldParser {
             throw new KintoneAPIException("Invalid default value data type:" + data.getDefaultValue());
         }
         date.setDefaultNowValue(data.getDefaultNowValue());
+        date.setUnique(data.getUnique());
   
         return date;
     }
 
-    private TimeField parseDateTimeFieldType(FormFieldParseData data) throws KintoneAPIException {
+    private DateTimeField parseDateTimeFieldType(FormFieldParseData data) throws KintoneAPIException {
         DateTimeField datetime = new DateTimeField(data.getCode());
  
         if (data.getDefaultValue() == null ) {
@@ -426,7 +428,8 @@ public class FormFieldParser {
             throw new KintoneAPIException("Invalid default value data type:" + data.getDefaultValue());
         }
         datetime.setDefaultNowValue(data.getDefaultNowValue());
-  
+        datetime.setUnique(data.getUnique());
+
         return datetime;
     }
 
@@ -440,8 +443,8 @@ public class FormFieldParser {
         return fieldGroup;
     }
 
-    private Attachment parseAttachmentType(FormFieldParseData data) throws KintoneAPIException {
-        Attachment attachment = new Attachment(data.getCode());
+    private AttachmentField parseAttachmentType(FormFieldParseData data) throws KintoneAPIException {
+        AttachmentField attachment = new AttachmentField(data.getCode());
  
         attachment.setThumbnailSize(parseInteger(data.getThumbnailSize()));
 
@@ -453,6 +456,7 @@ public class FormFieldParser {
  
         text.setExpression(data.getExpression());
         text.setHideExpression(data.getHideExpression());
+        text.setUnique(data.getUnique());
 
         if (data.getDefaultValue() == null ) {
             text.setDefaultValue(null);
@@ -562,16 +566,16 @@ public class FormFieldParser {
         if (data.getDefaultValue() == null ) {
             userSelection.setDefaultValue(null);
         } else if (data.getDefaultValue() instanceof List) {
-            List<Entity> defaultValue = new ArrayList<Entity>();
+            List<MemberSelectEntity> defaultValue = new ArrayList<MemberSelectEntity>();
 
             @SuppressWarnings("rawtypes")
             Iterator iterator = ((List) data.getDefaultValue()).iterator();
             while (iterator.hasNext()) {
                 Map<String, String> map = (Map<String, String>)iterator.next();
-                Entity entity = new Entity();
+                MemberSelectEntity entity = new MemberSelectEntity();
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     if (entry.getKey().equals("type")) {
-                        entity.setType(EntityType.valueOf(entry.getValue()));
+                        entity.setType(MemberSelectEntityType.valueOf(entry.getValue()));
                     } else if (entry.getKey().equals("code")) {
                         entity.setCode(entry.getValue());
                     }
@@ -595,16 +599,16 @@ public class FormFieldParser {
         if (data.getDefaultValue() == null ) {
             groupSelection.setDefaultValue(null);
         } else if (data.getDefaultValue() instanceof List) {
-            List<Entity> defaultValue = new ArrayList<Entity>();
+            List<MemberSelectEntity> defaultValue = new ArrayList<MemberSelectEntity>();
 
             @SuppressWarnings("rawtypes")
             Iterator iterator = ((List) data.getDefaultValue()).iterator();
             while (iterator.hasNext()) {
                 Map<String, String> map = (Map<String, String>)iterator.next();
-                Entity entity = new Entity();
+                MemberSelectEntity entity = new MemberSelectEntity();
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     if (entry.getKey().equals("type")) {
-                        entity.setType(EntityType.valueOf(entry.getValue()));
+                        entity.setType(MemberSelectEntityType.valueOf(entry.getValue()));
                     } else if (entry.getKey().equals("code")) {
                         entity.setCode(entry.getValue());
                     }
@@ -628,16 +632,16 @@ public class FormFieldParser {
         if (data.getDefaultValue() == null ) {
             departSelect.setDefaultValue(null);
         } else if (data.getDefaultValue() instanceof List) {
-            List<Entity> defaultValue = new ArrayList<Entity>();
+            List<MemberSelectEntity> defaultValue = new ArrayList<MemberSelectEntity>();
 
             @SuppressWarnings("rawtypes")
             Iterator iterator = ((List) data.getDefaultValue()).iterator();
             while (iterator.hasNext()) {
                 Map<String, String> map = (Map<String, String>)iterator.next();
-                Entity entity = new Entity();
+                MemberSelectEntity entity = new MemberSelectEntity();
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     if (entry.getKey().equals("type")) {
-                        entity.setType(EntityType.valueOf(entry.getValue()));
+                        entity.setType(MemberSelectEntityType.valueOf(entry.getValue()));
                     } else if (entry.getKey().equals("code")) {
                         entity.setCode(entry.getValue());
                     }
@@ -656,11 +660,11 @@ public class FormFieldParser {
     private Table parseSubTableType(FormFieldParseData data) throws KintoneAPIException {
         Table subtable = new Table(data.getCode());
 
-        Map<String, InputField> fields = new HashMap<String, InputField>();
+        Map<String, AbstractInputField> fields = new HashMap<String, AbstractInputField>();
 
         Set<Entry<String, JsonElement>> fieldsJson = data.getFields().entrySet();
         for(Entry<String, JsonElement> element : fieldsJson) {
-            InputField field = parseInputField(element.getValue());
+            AbstractInputField field = parseInputField(element.getValue());
             fields.put(field.getCode(), field);
         }
 

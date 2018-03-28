@@ -19,10 +19,11 @@ package com.kintone.api.client.restapi.model.app.form.field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class Table extends FormField {
-    protected Map<String, InputField> fields = new HashMap<String, InputField>();
+public class Table extends Field {
+    protected Map<String, AbstractInputField> fields = new HashMap<String, AbstractInputField>();
 
     public Table() {
         this.type = FieldType.SUBTABLE;
@@ -36,18 +37,18 @@ public class Table extends FormField {
     /**
      * @return the fields
      */
-    public Map<String, InputField> getFields() {
+    public Map<String, AbstractInputField> getFields() {
         return fields;
     }
 
     /**
      * @param fields the fields to set
      */
-    public void setFields(Map<String, InputField> fields) {
+    public void setFields(Map<String, AbstractInputField> fields) {
         this.fields = fields;
     }
 
-    public void addField(InputField field) {
+    public void addField(AbstractInputField field) {
         if (field == null || field.getCode() == null || field.getCode().trim().length() == 0) {
             return;
         }
@@ -55,7 +56,7 @@ public class Table extends FormField {
         fields.put(field.getCode(), field);
     }
 
-    public void removeField(InputField field) {
+    public void removeField(AbstractInputField field) {
         if (field == null || field.getCode() == null || field.getCode().trim().length() == 0) {
             return;
         }

@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.model.app.form.field;
 
-public class Entity {
-    private String code;
-    private EntityType type;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-    public Entity() {
-
-    }
-
-    public Entity(String code, EntityType type) {
-        this.code = code;
-        this.type = type;
-    }
+public abstract class Field {
+    protected String code = "";
+    protected FieldType type;
 
     /**
      * @return the code
@@ -37,7 +30,8 @@ public class Entity {
     }
 
     /**
-     * @param code the code to set
+     * @param code
+     *            the code to set
      */
     public void setCode(String code) {
         this.code = code;
@@ -46,15 +40,8 @@ public class Entity {
     /**
      * @return the type
      */
-    public EntityType getType() {
+    public FieldType getType() {
         return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(EntityType type) {
-        this.type = type;
     }
 
     /* (non-Javadoc)
@@ -65,7 +52,6 @@ public class Entity {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((code == null) ? 0 : code.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -80,13 +66,11 @@ public class Entity {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Entity other = (Entity) obj;
+        Field other = (Field) obj;
         if (code == null) {
             if (other.code != null)
                 return false;
         } else if (!code.equals(other.code))
-            return false;
-        if (type != other.type)
             return false;
         return true;
     }

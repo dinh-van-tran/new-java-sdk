@@ -22,15 +22,15 @@ import java.util.Map;
 public class FormFields {
     private Integer app;
     private Integer revision;
-    private Map<String, FormField> properties;
+    private Map<String, Field> properties;
 
     public FormFields() {
-        app = -1;
+        app = null;
         revision = null;
-        properties = new HashMap<String, FormField>();
+        properties = new HashMap<String, Field>();
     }
 
-    public FormFields(Integer app, Map<String, FormField> properties, Integer revision) {
+    public FormFields(Integer app, Map<String, Field> properties, Integer revision) {
         this.app = app;
         this.revision = revision;
         this.properties = properties;
@@ -69,7 +69,7 @@ public class FormFields {
     /**
      * @return the properties
      */
-    public Map<String, FormField> getProperties() {
+    public Map<String, Field> getProperties() {
         return properties;
     }
 
@@ -77,7 +77,7 @@ public class FormFields {
      * @param properties
      *            the properties to set
      */
-    public void setProperties(Map<String, FormField> properties) {
+    public void setProperties(Map<String, Field> properties) {
         this.properties = properties;
     }
 }

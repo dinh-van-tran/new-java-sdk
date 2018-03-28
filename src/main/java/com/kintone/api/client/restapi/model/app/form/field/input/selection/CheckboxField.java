@@ -16,9 +16,14 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.selection;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CheckboxField extends MultipleSelectionField {
+import com.kintone.api.client.restapi.constant.AlignLayout;
+import com.kintone.api.client.restapi.constant.FieldType;
+
+public class CheckboxField extends AbstractSelectionField {
+    protected List<String> defaultValue = new ArrayList<String>();
     protected AlignLayout align;
 
     public CheckboxField() {
@@ -43,5 +48,13 @@ public class CheckboxField extends MultipleSelectionField {
      */
     public void setAlign(AlignLayout align) {
         this.align = align;
+    }
+
+    public List<String> getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(List<String> defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }

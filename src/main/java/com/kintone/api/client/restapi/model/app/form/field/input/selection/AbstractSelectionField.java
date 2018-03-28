@@ -19,15 +19,15 @@ package com.kintone.api.client.restapi.model.app.form.field.input.selection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class SelectionField extends InputField {
-    protected Map<String, Option> options = new HashMap<String, Option>();
+public class AbstractSelectionField extends AbstractInputField {
+    protected Map<String, OptionData> options = new HashMap<String, OptionData>();
 
     /**
      * @return the options
      */
-    public Map<String, Option> getOptions() {
+    public Map<String, OptionData> getOptions() {
         return options;
     }
 
@@ -35,11 +35,11 @@ public class SelectionField extends InputField {
      * @param options
      *            the options to set
      */
-    public void setOptions(Map<String, Option> options) {
+    public void setOptions(Map<String, OptionData> options) {
         this.options = options;
     }
 
-    public void addOption(Option option) {
+    public void addOption(OptionData option) {
         if (option == null || option.getLabel() == null || option.getLabel().trim().length() == 0) {
             return;
         }
@@ -47,7 +47,7 @@ public class SelectionField extends InputField {
         options.put(option.getLabel(), option);
     }
 
-    public void removeOption(Option option) {
+    public void removeOption(OptionData option) {
         if (option == null || option.getLabel() == null || option.getLabel().trim().length() == 0) {
             return;
         }

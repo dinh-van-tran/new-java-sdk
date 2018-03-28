@@ -16,11 +16,11 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class CreatorField extends RecordNumberField {
+public class CreatorField extends AbstractSystemInfoField {
     public CreatorField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.CREATOR;
     }
 }

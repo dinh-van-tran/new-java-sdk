@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field;
+package com.kintone.api.client.restapi.model.app.form.field.input.member;
 
-public abstract class FormField {
-    protected String code = "";
-    protected FieldType type;
+import com.kintone.api.client.restapi.constant.MemberSelectEntityType;
+
+public class MemberSelectEntity {
+    private String code;
+    private MemberSelectEntityType type;
+
+    public MemberSelectEntity() {
+
+    }
+
+    public MemberSelectEntity(String code, MemberSelectEntityType type) {
+        this.code = code;
+        this.type = type;
+    }
 
     /**
      * @return the code
@@ -28,8 +39,7 @@ public abstract class FormField {
     }
 
     /**
-     * @param code
-     *            the code to set
+     * @param code the code to set
      */
     public void setCode(String code) {
         this.code = code;
@@ -38,8 +48,15 @@ public abstract class FormField {
     /**
      * @return the type
      */
-    public FieldType getType() {
+    public MemberSelectEntityType getType() {
         return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(MemberSelectEntityType type) {
+        this.type = type;
     }
 
     /* (non-Javadoc)
@@ -50,6 +67,7 @@ public abstract class FormField {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((code == null) ? 0 : code.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -64,11 +82,13 @@ public abstract class FormField {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        FormField other = (FormField) obj;
+        MemberSelectEntity other = (MemberSelectEntity) obj;
         if (code == null) {
             if (other.code != null)
                 return false;
         } else if (!code.equals(other.code))
+            return false;
+        if (type != other.type)
             return false;
         return true;
     }

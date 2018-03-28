@@ -16,28 +16,41 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.Field;
 
-public class Attachment extends InputField {
-    protected Integer thumbnailSize;
+public abstract class AbstractInputField extends Field {
+    protected String label;
+    protected Boolean noLabel;
+    protected Boolean required;
 
-    public Attachment(String code) {
-        this.code = code;
-        this.type = FieldType.FILE;
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     /**
-     * @return the thumbnailSize
+     * @return the noLabel
      */
-    public Integer getThumbnailSize() {
-        return thumbnailSize;
+    public Boolean getNoLabel() {
+        return noLabel;
     }
 
     /**
-     * @param thumbnailSize
-     *            the thumbnailSize to set
+     * @param noLabel
+     *            the noLabel to set
      */
-    public void setThumbnailSize(Integer thumbnailSize) {
-        this.thumbnailSize = thumbnailSize;
+    public void setNoLabel(Boolean noLabel) {
+        this.noLabel = noLabel;
+    }
+
+    public Boolean getRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 }

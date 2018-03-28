@@ -16,11 +16,11 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class ModifierField extends RecordNumberField {
+public class ModifierField extends AbstractSystemInfoField {
     public ModifierField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.MODIFIER;
     }
 }

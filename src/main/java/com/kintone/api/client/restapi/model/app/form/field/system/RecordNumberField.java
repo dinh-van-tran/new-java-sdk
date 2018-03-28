@@ -16,27 +16,11 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class RecordNumberField extends SystemField {
-    protected Boolean noLabel;
-
+public class RecordNumberField extends AbstractSystemInfoField {
     public RecordNumberField(String code) {
         this.code = code;
         this.type = FieldType.RECORD_NUMBER;
-    }
-
-    /**
-     * @return the noLabel
-     */
-    public Boolean isNoLabel() {
-        return noLabel;
-    }
-
-    /**
-     * @param noLabel the noLabel to set
-     */
-    public void setNoLabel(Boolean noLabel) {
-        this.noLabel = noLabel;
     }
 }

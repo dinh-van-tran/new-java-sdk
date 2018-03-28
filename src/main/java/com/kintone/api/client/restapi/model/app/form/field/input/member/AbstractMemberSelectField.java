@@ -14,31 +14,21 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.model.app.form.field.input.member;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class UserSelectionField extends InputField {
-    protected List<Entity> defaultValue = new ArrayList<Entity>();
-    protected List<Entity> entites = new ArrayList<Entity>();
-
-    public UserSelectionField() {
-        this.type = FieldType.USER_SELECT;
-    }
-
-    public UserSelectionField(String code) {
-        this.code = code;
-        this.type = FieldType.USER_SELECT;
-    }
+public abstract class AbstractMemberSelectField extends AbstractInputField {
+    protected List<MemberSelectEntity> defaultValue = new ArrayList<MemberSelectEntity>();
+    protected List<MemberSelectEntity> entites = new ArrayList<MemberSelectEntity>();
 
     /**
      * @return the defaultValue
      */
-    public List<Entity> getDefaultValue() {
+    public List<MemberSelectEntity> getDefaultValue() {
         return defaultValue;
     }
 
@@ -46,14 +36,14 @@ public class UserSelectionField extends InputField {
      * @param defaultValue
      *            the defaultValue to set
      */
-    public void setDefaultValue(List<Entity> defaultValue) {
+    public void setDefaultValue(List<MemberSelectEntity> defaultValue) {
         this.defaultValue = defaultValue;
     }
 
     /**
      * @return the entites
      */
-    public List<Entity> getEntites() {
+    public List<MemberSelectEntity> getEntites() {
         return entites;
     }
 
@@ -61,15 +51,7 @@ public class UserSelectionField extends InputField {
      * @param entites
      *            the entites to set
      */
-    public void setEntites(List<Entity> entites) {
+    public void setEntites(List<MemberSelectEntity> entites) {
         this.entites = entites;
-    }
-
-    public void addEntities(Entity entity) {
-        this.entites.add(entity);
-    }
-
-    public void removeEntites(Entity entity) {
-        this.entites.remove(entity);
     }
 }

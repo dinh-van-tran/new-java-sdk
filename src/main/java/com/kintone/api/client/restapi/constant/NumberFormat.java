@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.constant;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-
-public class DepartmentSelectionField extends UserSelectionField {
-    public DepartmentSelectionField() {
-        this.type = FieldType.ORGANIZATION_SELECT;
-    }
-
-    public DepartmentSelectionField(String code) {
-        this.code = code;
-        this.type = FieldType.ORGANIZATION_SELECT;
-    }
+public enum NumberFormat {
+    DATE,
+    TIME,
+    DATE_TIME,
+    NUMBER,
+    NUMBER_DIGIT,
+    HOUR_MINUTE,
+    DAY_HOUR_MINUTE
 }

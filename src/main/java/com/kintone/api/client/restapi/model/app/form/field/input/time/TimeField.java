@@ -16,10 +16,10 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.time;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class TimeField extends InputField {
+public class TimeField extends AbstractInputField {
     protected String defaultValue;
     protected Boolean defaultNowValue;
 

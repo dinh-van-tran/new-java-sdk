@@ -14,35 +14,13 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field;
+package com.kintone.api.client.restapi.model.app.form.field.input.member;
 
-public enum FieldType {
-    CALC,// TODO
-    GROUP,
-    FILE,
-    TIME,
-    DATE,
-    LINK,
-    NUMBER,
-    SUBTABLE,// TODO
-    DATETIME,
-    DROP_DOWN,
-    MULTI_SELECT,
-    RADIO_BUTTON,
-    CHECK_BOX,
-    USER_SELECT,
-    ORGANIZATION_SELECT,
-    GROUP_SELECT,
-    REFERENCE_TABLE,
-    MULTI_LINE_TEXT,
-    MODIFIER,
-    RICH_TEXT,
-    SINGLE_LINE_TEXT,
-    RECORD_NUMBER,
-    CREATOR,
-    CREATED_TIME,
-    UPDATED_TIME,
-    STATUS,
-    STATUS_ASSIGNEE,
-    CATEGORY
+import com.kintone.api.client.restapi.constant.FieldType;
+
+public class UserSelectionField extends AbstractMemberSelectField {
+    public UserSelectionField(String code) {
+        this.code = code;
+        this.type = FieldType.USER_SELECT;
+    }
 }

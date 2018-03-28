@@ -16,10 +16,12 @@
 
 package com.kintone.api.client.restapi.model.app.form.field;
 
-public class FieldGroup extends FormField {
-    protected String label = "";
-    protected Boolean noLabel;
-    protected Boolean openGroup;
+import com.kintone.api.client.restapi.constant.FieldType;
+
+public class FieldGroup extends Field {
+    protected String label = null;
+    protected Boolean noLabel = null;
+    protected Boolean openGroup = null;
 
     public FieldGroup() {
         this.type = FieldType.GROUP;

@@ -19,14 +19,10 @@ package com.kintone.api.client.restapi.model.app.form.field.input.selection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class MultipleSelectionField extends SelectionField {
+public class MultipleSelectionField extends AbstractSelectionField {
     protected List<String> defaultValue = new ArrayList<String>();
-
-    public MultipleSelectionField() {
-        this.type = FieldType.MULTI_SELECT;
-    }
 
     public MultipleSelectionField(String code) {
         this.code = code;

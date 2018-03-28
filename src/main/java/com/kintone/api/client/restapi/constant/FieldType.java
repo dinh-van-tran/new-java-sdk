@@ -14,10 +14,35 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.constant;
 
-public enum EntityType {
-    USER,
+public enum FieldType {
+    CALC,// TODO
     GROUP,
-    ORGANIZATION
+    FILE,
+    TIME,
+    DATE,
+    LINK,
+    NUMBER,
+    SUBTABLE,// TODO
+    DATETIME,
+    DROP_DOWN,
+    MULTI_SELECT,
+    RADIO_BUTTON,
+    CHECK_BOX,
+    USER_SELECT,
+    ORGANIZATION_SELECT,
+    GROUP_SELECT,
+    REFERENCE_TABLE,
+    MULTI_LINE_TEXT,
+    MODIFIER,
+    RICH_TEXT,
+    SINGLE_LINE_TEXT,
+    RECORD_NUMBER,
+    CREATOR,
+    CREATED_TIME,
+    UPDATED_TIME,
+    STATUS,
+    STATUS_ASSIGNEE,
+    CATEGORY
 }

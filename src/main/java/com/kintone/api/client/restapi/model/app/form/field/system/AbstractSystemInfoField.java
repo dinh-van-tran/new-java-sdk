@@ -16,11 +16,14 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.constant.FieldType;
+public abstract class AbstractSystemInfoField extends AbstractSystemField {
+    protected Boolean noLabel;
 
-public class CreatedTimeField extends AbstractSystemInfoField {
-    public CreatedTimeField(String code) {
-        this.code = code;
-        this.type = FieldType.CREATED_TIME;
+    public Boolean getNoLabel() {
+        return noLabel;
+    }
+
+    public void setNoLabel(Boolean noLabel) {
+        this.noLabel = noLabel;
     }
 }

@@ -16,11 +16,21 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class CategoryField extends StatusField {
+public class CategoryField extends AbstractSystemField {
+    protected Boolean enabled;
+
     public CategoryField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.CATEGORY;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

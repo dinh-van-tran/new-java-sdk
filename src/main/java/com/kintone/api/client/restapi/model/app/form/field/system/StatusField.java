@@ -16,27 +16,11 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class StatusField extends SystemField {
-    protected Boolean enabled;
-
+public class StatusField extends AbstractProcessManagementField {
     public StatusField(String code) {
         this.code = code;
         this.type = FieldType.STATUS;
-    }
-
-    /**
-     * @return the enabled
-     */
-    public Boolean isEnabled() {
-        return enabled;
-    }
-
-    /**
-     * @param enabled the enabled to set
-     */
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 }

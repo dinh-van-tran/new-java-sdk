@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.model.app.form.field.input.member;
 
 import com.kintone.api.client.restapi.constant.FieldType;
 
-public class DropDownField extends AbstractSelectionField {
-    protected String defaultValue;
+public class GroupSelectionField extends AbstractMemberSelectField {
+    public GroupSelectionField() {
+        this.type = FieldType.GROUP_SELECT;
+    }
 
-    public DropDownField(String code) {
+    public GroupSelectionField(String code) {
         this.code = code;
-        this.type = FieldType.DROP_DOWN;
-    }
-
-    /**
-     * @return the defaultValue
-     */
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    /**
-     * @param defaultValue
-     *            the defaultValue to set
-     */
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+        this.type = FieldType.GROUP_SELECT;
     }
 }

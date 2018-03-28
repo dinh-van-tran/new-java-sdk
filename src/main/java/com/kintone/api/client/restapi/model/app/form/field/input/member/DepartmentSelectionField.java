@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.model.app.form.field.input.member;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class RichTextField extends MultiLineText {
-    public RichTextField(String code) {
-        super(code);
-        this.type = FieldType.RICH_TEXT;
+public class DepartmentSelectionField extends AbstractMemberSelectField {
+    public DepartmentSelectionField(String code) {
+        this.code = code;
+        this.type = FieldType.ORGANIZATION_SELECT;
     }
 }

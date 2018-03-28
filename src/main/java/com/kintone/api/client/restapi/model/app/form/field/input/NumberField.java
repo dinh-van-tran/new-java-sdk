@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+package com.kintone.api.client.restapi.model.app.form.field.input;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.constant.UnitPosition;
 
-public class NumberField extends InputField {
+public class NumberField extends AbstractInputField {
     private Integer displayScale;
     private String unit;
     private UnitPosition unitPosition;
@@ -26,6 +26,7 @@ public class NumberField extends InputField {
     private Integer maxValue;
     private Integer minValue;
     private String defaultValue;
+    private Boolean unique;
 
     public NumberField(String code) {
         this.code = code;
@@ -128,5 +129,13 @@ public class NumberField extends InputField {
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public Boolean getUnique() {
+        return unique;
+    }
+
+    public void setUnique(Boolean unique) {
+        this.unique = unique;
     }
 }

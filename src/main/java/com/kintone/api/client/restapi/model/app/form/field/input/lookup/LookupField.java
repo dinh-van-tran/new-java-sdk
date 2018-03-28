@@ -16,10 +16,10 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.lookup;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 
-public class LookupField extends InputField {
+public class LookupField extends AbstractInputField {
     private LookupItem lookup;
 
     public LookupField(String code, FieldType type) {

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class MultiLineText extends InputField {
+public class MultiLineText extends AbstractInputField {
     private String defaultValue;
 
     public MultiLineText(String code) {

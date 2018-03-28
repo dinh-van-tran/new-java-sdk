@@ -16,11 +16,14 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+public abstract class AbstractProcessManagementField extends AbstractSystemField {
+    protected Boolean enabled;
 
-public class UpdatedTime extends RecordNumberField {
-    public UpdatedTime(String code) {
-        super(code);
-        this.type = FieldType.UPDATED_TIME;
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

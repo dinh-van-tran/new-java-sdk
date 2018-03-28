@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.constant.LinkProtocol;
 
 public class LinkField extends MultiLineText {
     private Boolean unique;

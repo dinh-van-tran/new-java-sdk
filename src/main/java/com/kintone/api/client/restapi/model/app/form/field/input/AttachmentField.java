@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
 import com.kintone.api.client.restapi.constant.FieldType;
 
-public class DropDownField extends AbstractSelectionField {
-    protected String defaultValue;
+public class AttachmentField extends AbstractInputField {
+    protected Integer thumbnailSize;
 
-    public DropDownField(String code) {
+    public AttachmentField(String code) {
         this.code = code;
-        this.type = FieldType.DROP_DOWN;
+        this.type = FieldType.FILE;
     }
 
     /**
-     * @return the defaultValue
+     * @return the thumbnailSize
      */
-    public String getDefaultValue() {
-        return defaultValue;
+    public Integer getThumbnailSize() {
+        return thumbnailSize;
     }
 
     /**
-     * @param defaultValue
-     *            the defaultValue to set
+     * @param thumbnailSize
+     *            the thumbnailSize to set
      */
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+    public void setThumbnailSize(Integer thumbnailSize) {
+        this.thumbnailSize = thumbnailSize;
     }
 }

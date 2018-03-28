@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class SingleLineTextField extends InputField {
+public class SingleLineTextField extends AbstractInputField {
     private String expression;
     private Boolean hideExpression;
     private Integer minLength;
     private Integer maxLength;
     private String defaultValue;
+    private Boolean unique;
 
     public SingleLineTextField(String code) {
         this.code = code;
@@ -99,5 +99,13 @@ public class SingleLineTextField extends InputField {
      */
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public Boolean getUnique() {
+        return unique;
+    }
+
+    public void setUnique(Boolean isUnique) {
+        this.unique = isUnique;
     }
 }

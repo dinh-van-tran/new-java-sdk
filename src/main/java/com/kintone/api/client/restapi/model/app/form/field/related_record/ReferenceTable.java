@@ -25,7 +25,7 @@ public class ReferenceTable {
     private FieldMapping condition;
     private String filterCond;
     private RelatedApp relatedApp;
-    private int size;
+    private Integer size;
     private List<String> displayFields = new ArrayList<String>();
     private String sort;
 
@@ -43,7 +43,7 @@ public class ReferenceTable {
      * @param size
      * @param displayFields
      */
-    public ReferenceTable(FieldMapping condition, String filterCond, RelatedApp relatedApp, int size,
+    public ReferenceTable(FieldMapping condition, String filterCond, RelatedApp relatedApp, Integer size,
             List<String> displayFields) {
         this.condition = condition;
         this.filterCond = filterCond;
@@ -97,7 +97,7 @@ public class ReferenceTable {
     /**
      * @return the size
      */
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 

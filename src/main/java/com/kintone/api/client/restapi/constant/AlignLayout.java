@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
 
-public enum UnitPosition {
-    BEFORE,
-    AFTER
+package com.kintone.api.client.restapi.constant;
+
+public enum AlignLayout {
+    HORIZONTAL,
+    VERTICAL
 }

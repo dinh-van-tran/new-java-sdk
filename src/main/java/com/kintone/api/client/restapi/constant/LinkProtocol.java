@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.selection;
+package com.kintone.api.client.restapi.constant;
 
-public enum AlignLayout {
-    HORIZONTAL,
-    VERTICAL
+public enum LinkProtocol {
+    WEB,
+    CALL,
+    MAIL
 }

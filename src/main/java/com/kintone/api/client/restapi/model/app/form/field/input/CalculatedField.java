@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.kintone.api.client.restapi.model.app.form.field.input.text;
+package com.kintone.api.client.restapi.model.app.form.field.input;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.constant.NumberFormat;
+import com.kintone.api.client.restapi.constant.UnitPosition;
 
-public class CalculatorField extends InputField {
+public class CalculatedField extends AbstractInputField {
     private String expression;
     private Boolean hideExpression;
     private Integer displayScale;
@@ -27,11 +28,11 @@ public class CalculatorField extends InputField {
     private UnitPosition unitPosition;
     private NumberFormat format;
 
-    public CalculatorField() {
+    public CalculatedField() {
         this.type = FieldType.CALC;
     }
 
-    public CalculatorField(String code) {
+    public CalculatedField(String code) {
         this.code = code;
         this.type = FieldType.CALC;
     }

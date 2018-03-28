@@ -16,15 +16,15 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.selection;
 
-public class Option {
+public class OptionData {
     private int index;
     private String label;
 
-    public Option() {
+    public OptionData() {
 
     }
 
-    public Option(int index, String label) {
+    public OptionData(int index, String label) {
         this.index = index;
         this.label = label;
     }
@@ -82,10 +82,10 @@ public class Option {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof Option)) {
+        if (!(obj instanceof OptionData)) {
             return false;
         }
-        Option other = (Option) obj;
+        OptionData other = (OptionData) obj;
         if (index != other.index) {
             return false;
         }

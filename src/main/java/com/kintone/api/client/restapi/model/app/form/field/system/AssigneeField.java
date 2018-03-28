@@ -15,11 +15,11 @@
  */
 package com.kintone.api.client.restapi.model.app.form.field.system;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class AssigneeField extends StatusField {
+public class AssigneeField extends AbstractProcessManagementField {
     public AssigneeField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.STATUS_ASSIGNEE;
     }
 }

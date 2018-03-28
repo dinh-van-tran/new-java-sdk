@@ -31,35 +31,35 @@ import org.junit.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.kintone.api.client.restapi.constant.MemberSelectEntityType;
+import com.kintone.api.client.restapi.constant.AlignLayout;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.constant.LinkProtocol;
+import com.kintone.api.client.restapi.constant.UnitPosition;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 import com.kintone.api.client.restapi.model.app.form.field.FieldGroup;
 import com.kintone.api.client.restapi.model.app.form.field.FieldMapping;
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
-import com.kintone.api.client.restapi.model.app.form.field.FormField;
+import com.kintone.api.client.restapi.model.app.form.field.Field;
 import com.kintone.api.client.restapi.model.app.form.field.FormFields;
 import com.kintone.api.client.restapi.model.app.form.field.Table;
-import com.kintone.api.client.restapi.model.app.form.field.input.Attachment;
-import com.kintone.api.client.restapi.model.app.form.field.input.InputField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AttachmentField;
+import com.kintone.api.client.restapi.model.app.form.field.input.LinkField;
+import com.kintone.api.client.restapi.model.app.form.field.input.MultiLineText;
+import com.kintone.api.client.restapi.model.app.form.field.input.NumberField;
+import com.kintone.api.client.restapi.model.app.form.field.input.RichTextField;
+import com.kintone.api.client.restapi.model.app.form.field.input.SingleLineTextField;
+import com.kintone.api.client.restapi.model.app.form.field.input.AbstractInputField;
 import com.kintone.api.client.restapi.model.app.form.field.input.lookup.LookupField;
 import com.kintone.api.client.restapi.model.app.form.field.input.lookup.LookupItem;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.AlignLayout;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.DepartmentSelectionField;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.MemberSelectEntity;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.GroupSelectionField;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.UserSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.CheckboxField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.DepartmentSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.DropDownField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.Entity;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.EntityType;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.GroupSelectionField;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.MultipleSelectionField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.Option;
+import com.kintone.api.client.restapi.model.app.form.field.input.selection.OptionData;
 import com.kintone.api.client.restapi.model.app.form.field.input.selection.RadioButtonField;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.UserSelectionField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.LinkField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.LinkProtocol;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.MultiLineText;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.NumberField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.RichTextField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.SingleLineTextField;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.UnitPosition;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.DateField;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.DateTimeField;
 import com.kintone.api.client.restapi.model.app.form.field.input.time.TimeField;
@@ -73,7 +73,7 @@ import com.kintone.api.client.restapi.model.app.form.field.system.CreatorField;
 import com.kintone.api.client.restapi.model.app.form.field.system.ModifierField;
 import com.kintone.api.client.restapi.model.app.form.field.system.RecordNumberField;
 import com.kintone.api.client.restapi.model.app.form.field.system.StatusField;
-import com.kintone.api.client.restapi.model.app.form.field.system.UpdatedTime;
+import com.kintone.api.client.restapi.model.app.form.field.system.UpdatedTimeField;
 import com.kintone.api.client.restapi.module.parser.FormFieldParser;
 
 public class FormFieldParserTest {
@@ -144,7 +144,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 NumberField number = (NumberField) properties.get("Number");
                 assertNotNull(number);
@@ -179,7 +179,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 LookupField lookup = (LookupField) properties.get("Lookup");
                 assertNotNull(lookup);
@@ -219,14 +219,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 CreatorField creator = (CreatorField) properties.get("Created_by");
                 assertNotNull(creator);
                 assertEquals("Created_by", creator.getCode());
                 assertEquals(FieldType.CREATOR, creator.getType());
                 assertEquals("Created by", creator.getLabel());
-                assertEquals(false, creator.isNoLabel());
+                assertEquals(false, creator.getNoLabel());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -245,14 +245,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 CreatedTimeField createdDateTime = (CreatedTimeField) properties.get("Created_datetime");
                 assertNotNull(createdDateTime);
                 assertEquals("Created_datetime", createdDateTime.getCode());
                 assertEquals(FieldType.CREATED_TIME, createdDateTime.getType());
                 assertEquals("Created datetime", createdDateTime.getLabel());
-                assertEquals(false, createdDateTime.isNoLabel());
+                assertEquals(false, createdDateTime.getNoLabel());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -271,14 +271,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 RecordNumberField recordNumber = (RecordNumberField) properties.get("Record_number");
                 assertNotNull(recordNumber);
                 assertEquals("Record_number", recordNumber.getCode());
                 assertEquals(FieldType.RECORD_NUMBER, recordNumber.getType());
                 assertEquals("Record number", recordNumber.getLabel());
-                assertEquals(false, recordNumber.isNoLabel());
+                assertEquals(false, recordNumber.getNoLabel());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -297,14 +297,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 ModifierField updater = (ModifierField) properties.get("Updated_by");
                 assertNotNull(updater);
                 assertEquals("Updated_by", updater.getCode());
                 assertEquals(FieldType.MODIFIER, updater.getType());
                 assertEquals("Updated by", updater.getLabel());
-                assertEquals(false, updater.isNoLabel());
+                assertEquals(false, updater.getNoLabel());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -323,14 +323,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
-                UpdatedTime updatedDateTime = (UpdatedTime) properties.get("Updated_datetime");
+                UpdatedTimeField updatedDateTime = (UpdatedTimeField) properties.get("Updated_datetime");
                 assertNotNull(updatedDateTime);
                 assertEquals("Updated_datetime", updatedDateTime.getCode());
                 assertEquals(FieldType.UPDATED_TIME, updatedDateTime.getType());
                 assertEquals("Updated datetime", updatedDateTime.getLabel());
-                assertEquals(false, updatedDateTime.isNoLabel());
+                assertEquals(false, updatedDateTime.getNoLabel());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -349,14 +349,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 StatusField status = (StatusField) properties.get("Status");
                 assertNotNull(status);
                 assertEquals("Status", status.getCode());
                 assertEquals(FieldType.STATUS, status.getType());
                 assertEquals("Status", status.getLabel());
-                assertEquals(false, status.isEnabled());
+                assertEquals(false, status.getEnabled());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -375,14 +375,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 AssigneeField assignee = (AssigneeField) properties.get("Assignee");
                 assertNotNull(assignee);
                 assertEquals("Assignee", assignee.getCode());
                 assertEquals(FieldType.STATUS_ASSIGNEE, assignee.getType());
                 assertEquals("Assignee", assignee.getLabel());
-                assertEquals(false, assignee.isEnabled());
+                assertEquals(false, assignee.getEnabled());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -401,14 +401,14 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 CategoryField category = (CategoryField) properties.get("Categories");
                 assertNotNull(category);
                 assertEquals("Categories", category.getCode());
                 assertEquals(FieldType.CATEGORY, category.getType());
                 assertEquals("Categories", category.getLabel());
-                assertEquals(false, category.isEnabled());
+                assertEquals(false, category.getEnabled());
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -427,7 +427,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 RichTextField richText = (RichTextField) properties.get("Rich_text");
                 assertNotNull(richText);
@@ -455,7 +455,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 LinkField link = (LinkField) properties.get("Link");
                 assertNotNull(link);
@@ -487,7 +487,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 FieldGroup fieldGroup = (FieldGroup) properties.get("Field_group");
                 assertNotNull(fieldGroup);
@@ -514,7 +514,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 TimeField timeField = (TimeField) properties.get("Time");
                 assertNotNull(timeField);
@@ -543,7 +543,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 DateField dateField = (DateField) properties.get("Date");
                 assertNotNull(dateField);
@@ -573,7 +573,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 DateTimeField dateTimeField = (DateTimeField) properties.get("Date_and_time");
                 assertNotNull(dateTimeField);
@@ -603,9 +603,9 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
-                Attachment attachment = (Attachment) properties.get("Attachment");
+                AttachmentField attachment = (AttachmentField) properties.get("Attachment");
                 assertNotNull(attachment);
                 assertEquals(FieldType.FILE, attachment.getType());
                 assertEquals("Attachment", attachment.getCode());
@@ -631,7 +631,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 SingleLineTextField text = (SingleLineTextField) properties.get("Text");
                 assertNotNull(text);
@@ -664,7 +664,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 MultiLineText textArea = (MultiLineText) properties.get("Text_Area");
                 assertNotNull(textArea);
@@ -692,7 +692,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 DropDownField dropDown = (DropDownField) properties.get("Drop_down");
                 assertNotNull(dropDown);
@@ -703,16 +703,16 @@ public class FormFieldParserTest {
                 assertEquals(false, dropDown.getRequired());
                 assertEquals("", dropDown.getDefaultValue());
 
-                Map<String, Option> options = dropDown.getOptions();
+                Map<String, OptionData> options = dropDown.getOptions();
                 assertNotNull(options);
                 assertEquals(2, options.size());
 
-                Option option1 = options.get("sample1");
+                OptionData option1 = options.get("sample1");
                 assertNotNull(option1);
                 assertEquals("sample1", option1.getLabel());
                 assertEquals(0, option1.getIndex());
 
-                Option option2 = options.get("sample2");
+                OptionData option2 = options.get("sample2");
                 assertNotNull(option2);
                 assertEquals("sample2", option2.getLabel());
                 assertEquals(1, option2.getIndex());
@@ -734,7 +734,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 MultipleSelectionField multiSelect = (MultipleSelectionField) properties.get("Multi_choice");
                 assertNotNull(multiSelect);
@@ -744,26 +744,26 @@ public class FormFieldParserTest {
                 assertEquals(false, multiSelect.getNoLabel());
                 assertEquals(false, multiSelect.getRequired());
 
-                Map<String, Option> options = multiSelect.getOptions();
+                Map<String, OptionData> options = multiSelect.getOptions();
                 assertNotNull(options);
                 assertEquals(4, options.size());
 
-                Option option1 = options.get("Orange");
+                OptionData option1 = options.get("Orange");
                 assertNotNull(option1);
                 assertEquals("Orange", option1.getLabel());
                 assertEquals(0, option1.getIndex());
 
-                Option option2 = options.get("sample2");
+                OptionData option2 = options.get("sample2");
                 assertNotNull(option2);
                 assertEquals("sample2", option2.getLabel());
                 assertEquals(1, option2.getIndex());
 
-                Option option3 = options.get("sample3");
+                OptionData option3 = options.get("sample3");
                 assertNotNull(option3);
                 assertEquals("sample3", option3.getLabel());
                 assertEquals(2, option3.getIndex());
 
-                Option option4 = options.get("sample4");
+                OptionData option4 = options.get("sample4");
                 assertNotNull(option4);
                 assertEquals("sample4", option4.getLabel());
                 assertEquals(3, option4.getIndex());
@@ -792,7 +792,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 CheckboxField checkbox = (CheckboxField) properties.get("Check_box");
                 assertNotNull(checkbox);
@@ -802,16 +802,16 @@ public class FormFieldParserTest {
                 assertEquals(false, checkbox.getNoLabel());
                 assertEquals(false, checkbox.getRequired());
 
-                Map<String, Option> options = checkbox.getOptions();
+                Map<String, OptionData> options = checkbox.getOptions();
                 assertNotNull(options);
                 assertEquals(2, options.size());
 
-                Option option1 = options.get("sample1");
+                OptionData option1 = options.get("sample1");
                 assertNotNull(option1);
                 assertEquals("sample1", option1.getLabel());
                 assertEquals(0, option1.getIndex());
 
-                Option option2 = options.get("sample2");
+                OptionData option2 = options.get("sample2");
                 assertNotNull(option2);
                 assertEquals("sample2", option2.getLabel());
                 assertEquals(1, option2.getIndex());
@@ -840,7 +840,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 RadioButtonField radioBtn = (RadioButtonField) properties.get("Radio_Button");
                 assertNotNull(radioBtn);
@@ -850,16 +850,16 @@ public class FormFieldParserTest {
                 assertEquals(false, radioBtn.getNoLabel());
                 assertEquals(true, radioBtn.getRequired());
 
-                Map<String, Option> options = radioBtn.getOptions();
+                Map<String, OptionData> options = radioBtn.getOptions();
                 assertNotNull(options);
                 assertEquals(2, options.size());
 
-                Option option1 = options.get("sample1");
+                OptionData option1 = options.get("sample1");
                 assertNotNull(option1);
                 assertEquals("sample1", option1.getLabel());
                 assertEquals(0, option1.getIndex());
 
-                Option option2 = options.get("sample2");
+                OptionData option2 = options.get("sample2");
                 assertNotNull(option2);
                 assertEquals("sample2", option2.getLabel());
                 assertEquals(1, option2.getIndex());
@@ -885,7 +885,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 RelatedRecordsField relatedRecords = (RelatedRecordsField) properties.get("Related_Records");
                 assertNotNull(relatedRecords);
@@ -897,7 +897,7 @@ public class FormFieldParserTest {
                 ReferenceTable refTable = relatedRecords.getReferenceTable();
                 assertNotNull(refTable);
                 assertEquals("", refTable.getFilterCond());
-                assertEquals(5, refTable.getSize());
+                assertEquals(Integer.valueOf(5), refTable.getSize());
                 assertEquals("Record_number desc", refTable.getSort());
 
                 RelatedApp refApp = refTable.getRelatedApp();
@@ -932,7 +932,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 UserSelectionField userSelect = (UserSelectionField) properties.get("User_selection");
                 assertNotNull(userSelect);
@@ -942,19 +942,19 @@ public class FormFieldParserTest {
                 assertEquals(false, userSelect.getNoLabel());
                 assertEquals(false, userSelect.getRequired());
 
-                List<Entity> entites = userSelect.getEntites();
+                List<MemberSelectEntity> entites = userSelect.getEntites();
                 assertNotNull(entites);
                 assertEquals(1, entites.size());
-                Entity entity = entites.get(0);
-                assertEquals(EntityType.USER, entity.getType());
+                MemberSelectEntity entity = entites.get(0);
+                assertEquals(MemberSelectEntityType.USER, entity.getType());
                 assertEquals("dinh", entity.getCode());
 
-                List<Entity> defaultValue = userSelect.getDefaultValue();
+                List<MemberSelectEntity> defaultValue = userSelect.getDefaultValue();
                 assertNotNull(defaultValue);
                 assertEquals(2, defaultValue.size());
 
-                assertTrue(defaultValue.contains(new Entity("dinh", EntityType.USER)));
-                assertTrue(defaultValue.contains(new Entity("cuc", EntityType.USER)));
+                assertTrue(defaultValue.contains(new MemberSelectEntity("dinh", MemberSelectEntityType.USER)));
+                assertTrue(defaultValue.contains(new MemberSelectEntity("cuc", MemberSelectEntityType.USER)));
             } catch (ClassCastException e) {
                 fail(e.getMessage());
             }
@@ -973,7 +973,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 GroupSelectionField groupSelect = (GroupSelectionField) properties.get("Group_selection");
                 assertNotNull(groupSelect);
@@ -983,11 +983,11 @@ public class FormFieldParserTest {
                 assertEquals(false, groupSelect.getNoLabel());
                 assertEquals(false, groupSelect.getRequired());
 
-                List<Entity> entites = groupSelect.getEntites();
+                List<MemberSelectEntity> entites = groupSelect.getEntites();
                 assertNotNull(entites);
                 assertEquals(0, entites.size());
 
-                List<Entity> defaultValue = groupSelect.getDefaultValue();
+                List<MemberSelectEntity> defaultValue = groupSelect.getDefaultValue();
                 assertNotNull(defaultValue);
                 assertEquals(0, defaultValue.size());
             } catch (ClassCastException e) {
@@ -1008,7 +1008,7 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 DepartmentSelectionField departSelect = (DepartmentSelectionField) properties.get("Department_selection");
                 assertNotNull(departSelect);
@@ -1018,11 +1018,11 @@ public class FormFieldParserTest {
                 assertEquals(false, departSelect.getNoLabel());
                 assertEquals(false, departSelect.getRequired());
 
-                List<Entity> entites = departSelect.getEntites();
+                List<MemberSelectEntity> entites = departSelect.getEntites();
                 assertNotNull(entites);
                 assertEquals(0, entites.size());
 
-                List<Entity> defaultValue = departSelect.getDefaultValue();
+                List<MemberSelectEntity> defaultValue = departSelect.getDefaultValue();
                 assertNotNull(defaultValue);
                 assertEquals(0, defaultValue.size());
             } catch (ClassCastException e) {
@@ -1043,18 +1043,18 @@ public class FormFieldParserTest {
             assertNotNull(formFields);
             assertNotNull(formFields.getProperties());
 
-            Map<String, FormField> properties = formFields.getProperties();
+            Map<String, Field> properties = formFields.getProperties();
             try {
                 Table subTable = (Table) properties.get("Table");
                 assertNotNull(subTable);
                 assertEquals(FieldType.SUBTABLE, subTable.getType());
                 assertEquals("Table", subTable.getCode());
 
-                Map<String, InputField> fields = subTable.getFields();
+                Map<String, AbstractInputField> fields = subTable.getFields();
                 assertNotNull(fields);
                 assertEquals(2, fields.size());
 
-                InputField number = fields.get("Number_row");
+                AbstractInputField number = fields.get("Number_row");
                 assertTrue(number instanceof NumberField);
                 NumberField numberField = (NumberField)number;
                 assertEquals(FieldType.NUMBER, numberField.getType());
@@ -1070,7 +1070,7 @@ public class FormFieldParserTest {
                 assertEquals("", numberField.getUnit());
                 assertEquals(UnitPosition.BEFORE, numberField.getUnitPosition());
 
-                InputField text = fields.get("Text_row");
+                AbstractInputField text = fields.get("Text_row");
                 assertTrue(text instanceof SingleLineTextField);
             } catch (ClassCastException e) {
                 fail(e.getMessage());

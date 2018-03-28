@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonObject;
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.AlignLayout;
+import com.kintone.api.client.restapi.constant.FieldType;
+import com.kintone.api.client.restapi.constant.LinkProtocol;
+import com.kintone.api.client.restapi.constant.NumberFormat;
+import com.kintone.api.client.restapi.constant.UnitPosition;
 import com.kintone.api.client.restapi.model.app.form.field.input.lookup.LookupItem;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.AlignLayout;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.Entity;
-import com.kintone.api.client.restapi.model.app.form.field.input.selection.Option;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.LinkProtocol;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.NumberFormat;
-import com.kintone.api.client.restapi.model.app.form.field.input.text.UnitPosition;
+import com.kintone.api.client.restapi.model.app.form.field.input.member.MemberSelectEntity;
+import com.kintone.api.client.restapi.model.app.form.field.input.selection.OptionData;
 import com.kintone.api.client.restapi.model.app.form.field.related_record.ReferenceTable;
 
 public class FormFieldParseData {
@@ -52,8 +52,8 @@ public class FormFieldParseData {
     private String displayScale;
     private LookupItem lookup;
     private ReferenceTable referenceTable;
-    private List<Entity> entities;
-    private Map<String, Option> options;
+    private List<MemberSelectEntity> entities;
+    private Map<String, OptionData> options;
     private LinkProtocol protocol;
     private AlignLayout align;
     private Object defaultValue;
@@ -141,11 +141,11 @@ public class FormFieldParseData {
         this.protocol = protocol;
     }
 
-    public Map<String, Option> getOptions() {
+    public Map<String, OptionData> getOptions() {
         return options;
     }
 
-    public void setOptions(Map<String, Option> options) {
+    public void setOptions(Map<String, OptionData> options) {
         this.options = options;
     }
 
@@ -165,11 +165,11 @@ public class FormFieldParseData {
         this.defaultNowValue = defaultNowValue;
     }
 
-    public List<Entity> getEntities() {
+    public List<MemberSelectEntity> getEntities() {
         return entities;
     }
 
-    public void setEntities(List<Entity> entities) {
+    public void setEntities(List<MemberSelectEntity> entities) {
         this.entities = entities;
     }
 

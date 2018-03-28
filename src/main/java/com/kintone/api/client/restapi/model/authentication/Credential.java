@@ -39,5 +39,4 @@ public class Credential {
     public String getPassword() {
         return password;
     }
-    
 }

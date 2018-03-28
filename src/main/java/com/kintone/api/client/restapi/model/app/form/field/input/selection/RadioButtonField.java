@@ -16,13 +16,15 @@
 
 package com.kintone.api.client.restapi.model.app.form.field.input.selection;
 
-import com.kintone.api.client.restapi.model.app.form.field.FieldType;
+import com.kintone.api.client.restapi.constant.AlignLayout;
+import com.kintone.api.client.restapi.constant.FieldType;
 
-public class RadioButtonField extends DropDownField {
+public class RadioButtonField extends AbstractSelectionField {
+    protected String defaultValue;
     protected AlignLayout align;
 
     public RadioButtonField(String code) {
-        super(code);
+        this.code = code;
         this.type = FieldType.RADIO_BUTTON;
     }
 
@@ -39,5 +41,13 @@ public class RadioButtonField extends DropDownField {
      */
     public void setAlign(AlignLayout align) {
         this.align = align;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 }
