@@ -25,6 +25,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kintone.api.client.restapi.authentication.Auth;
+import com.kintone.api.client.restapi.constant.ConnectionConstants;
 import com.kintone.api.client.restapi.exception.KintoneAPIException;
 
 public class ConnectionTest {
